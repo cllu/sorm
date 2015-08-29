@@ -14,7 +14,7 @@ class JValueTest extends FunSuite with ShouldMatchers {
   test("JValue Test"){
     val db = new Instance (
       entities = Set(Entity[User]()),
-      url = "jdbc:h2:mem:test",
+      url = "jdbc:h2:mem:testJValue",
       initMode = InitMode.Create,
       poolSize = 20
     )
@@ -23,10 +23,10 @@ class JValueTest extends FunSuite with ShouldMatchers {
     val u2 = db.query[User].fetchOne().get
 
     implicit val formats = DefaultFormats
-    assert((u2.json \ "id").extract[String] == "100")
+    assert((u2.jvalue \ "id").extract[String] == "100")
   }
 
 }
 object JValueTest {
-  case class User(json: JValue)
+  case class User(jvalue: JValue)
 }

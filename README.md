@@ -11,6 +11,9 @@ This fork has the following changes:
 
 - Add support for JValue from json4s, which will be converted to String internally
 - Use Java 8 time instead of joda-time
+- remove joda-convert
+- TODO: remove dependencies on sext and embrace
+- TODO: use slf4j instead of scala-logging
 
 To install
 
@@ -26,4 +29,4 @@ To install
 
 ---
 
-[![Build Status](https://travis-ci.org/sorm/sorm.png?branch=master)](https://travis-ci.org/sorm/sorm)
+[![Build Status](https://travis-ci.org/cllu/sorm.svg?branch=master)](https://travis-ci.org/cllu/sorm)
