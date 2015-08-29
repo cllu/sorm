@@ -1,5 +1,6 @@
 package sorm.mappings
 
+import org.json4s.JValue
 import sext._, embrace._
 import sorm._
 import core.SormException
@@ -19,6 +20,7 @@ object MappingKind {
   case object Set              extends MappingKind
   case object Map              extends MappingKind
   case object Range            extends MappingKind
+  case object JValue           extends MappingKind
 
   def apply
     ( reflection : Reflection )
@@ -54,6 +56,9 @@ object MappingKind {
         case _
           if (reflection <:< Reflection[Enumeration#Value])
           => Enum
+        case _
+          if (reflection <:< Reflection[JValue])
+          => JValue
         case _
           if (reflection <:< Reflection[Tuple1[_]])
           || (reflection <:< Reflection[Tuple2[_, _]])

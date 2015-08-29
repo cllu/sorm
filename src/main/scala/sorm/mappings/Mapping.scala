@@ -67,17 +67,17 @@ object Mapping {
       settings : Map[Reflection, EntitySettings] )
     : Mapping
     = MappingKind( reflection ) match {
-        case MappingKind.Value => 
+        case MappingKind.Value =>
           new ValueMapping( reflection, membership, settings )
-        case MappingKind.Tuple => 
+        case MappingKind.Tuple =>
           new TupleMapping( reflection, membership, settings )
-        case MappingKind.Seq => 
+        case MappingKind.Seq =>
           new SeqMapping( reflection, membership, settings )
-        case MappingKind.Set => 
+        case MappingKind.Set =>
           new SetMapping( reflection, membership, settings )
-        case MappingKind.Map => 
+        case MappingKind.Map =>
           new MapMapping( reflection, membership, settings )
-        case MappingKind.Entity => 
+        case MappingKind.Entity =>
           new EntityMapping( reflection, membership, settings )
         case MappingKind.OptionToTable =>
           new OptionToTableMapping( reflection, membership, settings )
@@ -87,13 +87,15 @@ object Mapping {
           new EnumMapping( reflection, membership, settings )
         case MappingKind.Range =>
           new RangeMapping( reflection, membership, settings )
+        case MappingKind.JValue =>
+          new JValueMapping( reflection, membership, settings )
       }
 
   def apply
     ( reflection : Reflection,
       membership : Membership,
       settings : Map[Reflection, EntitySettings] )
-    : Mapping 
+    : Mapping
     = apply(reflection, Some(membership), settings)
 
 }
