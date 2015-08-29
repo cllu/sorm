@@ -5,7 +5,6 @@ import sext._, embrace._
 import sorm._
 import reflection._
 import ddl._
-import org.joda.time._
 
 trait ColumnMapping extends Mapping {
   def columnsForContainer = column +: Stream()

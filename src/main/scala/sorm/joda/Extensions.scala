@@ -1,36 +1,19 @@
 package sorm.joda
 
-import org.joda.time._
-import sext._, embrace._
+import java.time.{LocalDate, LocalTime, Instant}
 
 object Extensions {
-  
-  implicit class DateTimeToJava ( val self : DateTime ) extends AnyVal {
-    def toJava = new java.sql.Timestamp( self.getMillis )
+
+  implicit class DateTimeToJava ( val self : Instant ) extends AnyVal {
+    def toJava = new java.sql.Timestamp( self.toEpochMilli )
   }
 
   implicit class LocalDateToJava ( val self : LocalDate ) extends AnyVal {
-    def toJava = self.toDate.getTime $ (new java.sql.Date(_))
+    def toJava = new java.sql.Date(self.getYear, self.getMonth.getValue-1, self.getDayOfMonth)
   }
 
   implicit class LocalTimeToJava ( val self : LocalTime ) extends AnyVal {
-    def toJava = new java.sql.Time( self.getMillisOfDay )
+    def toJava = new java.sql.Time(self.getHour, self.getMinute, self.getSecond)
   }
-
-
-
-  implicit class DateToJoda ( val self : java.sql.Date ) extends AnyVal {
-    def toJoda = LocalDate.fromDateFields(self)
-  }
-
-  implicit class TimeToJoda ( val self : java.sql.Time ) extends AnyVal {
-    def toJoda = LocalTime.fromDateFields(self)
-  }
-
-  implicit class TimestampToJoda ( val self : java.sql.Timestamp ) extends AnyVal {
-    def toJoda = new DateTime(self.getTime)
-  }
-
-
 
 }

@@ -49,9 +49,9 @@ object MappingKind {
           if (reflection <:< Reflection[AnyVal])
           || (reflection <:< Reflection[String])
           || (reflection <:< Reflection[BigDecimal])
-          || (reflection <:< Reflection[org.joda.time.DateTime])
-          || (reflection <:< Reflection[org.joda.time.LocalDate])
-          || (reflection <:< Reflection[org.joda.time.LocalTime])
+          || (reflection <:< Reflection[java.time.Instant])
+          || (reflection <:< Reflection[java.time.LocalDate])
+          || (reflection <:< Reflection[java.time.LocalTime])
           => Value
         case _
           if (reflection <:< Reflection[Enumeration#Value])

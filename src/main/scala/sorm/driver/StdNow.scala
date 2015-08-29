@@ -1,13 +1,14 @@
 package sorm.driver
 
-import org.joda.time.DateTime
+import java.time.Instant
+
 import sorm.jdbc.{JdbcConnection, Statement}
 
 trait StdNow { self: StdConnection =>
-  def now() : DateTime
+  def now() : Instant
     = connection
         .executeQuery(Statement("SELECT NOW()"))()
         .head.head
-        .asInstanceOf[DateTime]
+        .asInstanceOf[Instant]
 
 }

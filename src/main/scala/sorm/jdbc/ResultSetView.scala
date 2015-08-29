@@ -1,13 +1,13 @@
 package sorm.jdbc
 
 import java.sql._
+import java.time.Instant
 
 import sorm._
-import joda.Extensions._
 import sext._, embrace._
 
 class ResultSetView
-  ( rs : ResultSet ) 
+  ( rs : ResultSet )
   {
     private lazy val md = rs.getMetaData
     private lazy val indexTypeSeq : IndexedSeq[(Int, JdbcType)]
@@ -48,8 +48,8 @@ class ResultSetView
      */
     def value
       ( i : Int,
-        t : JdbcType ) 
-      : Any 
+        t : JdbcType )
+      : Any
       = {
         import java.sql.Types._
         val r
@@ -76,9 +76,9 @@ class ResultSetView
             }
         if( rs.wasNull() ) null
         else r match {
-          case r : java.sql.Date => r.toJoda
-          case r : java.sql.Time => r.toJoda
-          case r : java.sql.Timestamp => r.toJoda
+          case r : java.sql.Date => r.toLocalDate
+          case r : java.sql.Time => r.toLocalTime
+          case r : java.sql.Timestamp => Instant.ofEpochMilli(r.getTime)
           case _ => r
         }
       }

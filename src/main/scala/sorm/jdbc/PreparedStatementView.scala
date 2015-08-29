@@ -1,21 +1,20 @@
 package sorm.jdbc
 
 import java.sql.PreparedStatement
-import org.joda.time._
+import java.time.{Instant, LocalTime, LocalDate}
 
 import sorm._
 import joda.Extensions._
-import sext._, embrace._
 
 class PreparedStatementView
-  ( s : PreparedStatement ) 
+  ( s : PreparedStatement )
   {
     /**
      * @see <a href=http://docstore.mik.ua/orelly/java-ent/servlet/ch09_02.htm#ch09-22421>jdbc table
      */
-    def set 
-      ( i : Int, 
-        v : Any ) 
+    def set
+      ( i : Int,
+        v : Any )
       {
         v match {
           case v: Boolean              => s.setBoolean(i, v)
@@ -29,12 +28,12 @@ class PreparedStatementView
           case v: BigDecimal           => s.setBigDecimal(i, v.bigDecimal)
           case v: LocalDate            => s.setDate(i, v.toJava)
           case v: LocalTime            => s.setTime(i, v.toJava)
-          case v: DateTime             => s.setTimestamp(i, v.toJava)
+          case v: Instant              => s.setTimestamp(i, v.toJava)
           case null                    => s.setNull(i, java.sql.Types.NULL)
           case _                       => ???
         }
       }
-    def set 
+    def set
       ( i : Int,
         v : JdbcValue )
       {

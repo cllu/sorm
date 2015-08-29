@@ -1,11 +1,12 @@
 package sorm.mappings
 
+import java.time.{LocalDate, Instant, LocalTime}
+
 import sorm._
 import driver.DriverConnection
 import core._
 import reflection._
 import ddl._
-import org.joda.time._
 
 class ValueMapping
   ( val reflection : Reflection,
@@ -36,7 +37,7 @@ class ValueMapping
             ⇒ ColumnType.Float
           case _ if reflection <:< Reflection[Double]
             ⇒ ColumnType.Double
-          case _ if reflection <:< Reflection[DateTime]
+          case _ if reflection <:< Reflection[Instant]
             ⇒ ColumnType.TimeStamp
           case _ if reflection <:< Reflection[LocalTime]
             ⇒ ColumnType.Time

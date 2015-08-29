@@ -40,8 +40,6 @@ class Instance
 
 object Instance {
 
-  import org.joda.time.DateTime
-
   trait Api extends Logging {
 
     protected val connector : Connector
@@ -63,7 +61,7 @@ object Instance {
 
     /**
      * Return the [[sorm.Querier]] object for performing a read-query on a specified entity type.
-     * 
+     *
      * @tparam T The entity type
      * @return The accessor object. An abstraction over all kinds of supported SELECT-queries.
      */
@@ -92,7 +90,7 @@ object Instance {
       = connector.withConnection{ cx =>
           jdbc.Statement.simple(template, values)
             .$( cx.queryJdbc(_)(_.byNameRowsTraversable.toList).toStream )
-            .ensuring( 
+            .ensuring(
               _.headOption
                 .map( k => k.keys == Set("id") )
                 .getOrElse(true),
@@ -105,7 +103,7 @@ object Instance {
         }
 
     /**
-     * Fetch an existing entity by id. Will throw an exception if the entity doesn't exist. 
+     * Fetch an existing entity by id. Will throw an exception if the entity doesn't exist.
      * @param id The id
      * @return An entity instance with a [[sorm.Persisted]] trait mixed in
      */
@@ -113,7 +111,7 @@ object Instance {
       [ T <: AnyRef : TypeTag ]
       ( id : Long )
       : T with Persisted
-      = connector.withConnection{ cx => 
+      = connector.withConnection{ cx =>
           id $ ("id" -> _) $ (Map(_)) $ (mapping[T].fetchByPrimaryKey(_, cx).asInstanceOf[T with Persisted])
         }
 
@@ -170,7 +168,7 @@ object Instance {
      * All db-requests which should be executed as part of this transaction must be run on the same thread this method gets called on.
      *
      * Use transactions with care because for the time the transaction is being executed the involved tables are supposed to get locked, putting all the requests to them from other threads in a queue until the current transaction finishes. The best practice is to make transactions as short as possible and to perform any calculations prior to entering transaction.
-     * 
+     *
      * @param t The closure wrapping the actions performed in a single transaction.
      * @tparam T The result of the closure
      * @return The result of the last statement of the passed in closure
@@ -182,7 +180,7 @@ object Instance {
      * Current time at DB server in milliseconds. Effectively fetches the date only once to calculate the deviation.
      */
     @deprecated ("now().getMillis should be used instead")
-    def nowMillis() = now().getMillis
+    def nowMillis() = now().getNano/1000
 
     /**
      * Current DateTime at DB server. Effectively fetches the date only once to calculate the deviation.

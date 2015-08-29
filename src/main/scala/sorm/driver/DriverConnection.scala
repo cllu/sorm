@@ -1,10 +1,8 @@
 package sorm.driver
 
-import sext._, embrace._
-import org.joda.time.DateTime
+import java.time.Instant
 
 import sorm._
-import sorm.core._
 import sorm.abstractSql.AbstractSql._
 import jdbc.ResultSetView
 
@@ -22,7 +20,7 @@ trait DriverConnection {
     ( s : jdbc.Statement )
     ( parse : ResultSetView => T = (_ : ResultSetView).indexedRowsTraversable.toList )
     : T
-  def now() : DateTime
+  def now() : Instant
   def listTables(): List[String]
   def dropTable
     ( table : String )

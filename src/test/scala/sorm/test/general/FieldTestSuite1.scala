@@ -1,5 +1,7 @@
 package sorm.test.general
 
+import java.time.{Instant, LocalDate}
+
 import org.scalatest.{SequentialNestedSuiteExecution, FunSuite}
 import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
@@ -7,8 +9,6 @@ import org.scalatest.junit.JUnitRunner
 
 import sorm._
 import core.DbType
-import sext._, embrace._
-import org.joda.time._
 import sorm.test.TestingInstances
 
 @RunWith(classOf[JUnitRunner])
@@ -87,9 +87,9 @@ object FieldTestSuite1 {
 
   case class Task
     ( sourceId : String,
-      opened : DateTime,
-      started : Option[DateTime] = None,
-      closed : Option[DateTime] = None,
+      opened : Instant,
+      started : Option[Instant] = None,
+      closed : Option[Instant] = None,
       failure : Option[String] = None,
       outdated : Boolean = false,
       generated : Boolean = false )

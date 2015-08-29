@@ -2,7 +2,6 @@ package sorm.jdbc
 
 import sext._
 import org.slf4j.LoggerFactory
-import org.joda.time.Period
 
 trait JdbcConnectionLogging {
   private lazy val logger : org.slf4j.Logger = LoggerFactory getLogger this.getClass()
