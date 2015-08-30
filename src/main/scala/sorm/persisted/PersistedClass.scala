@@ -1,18 +1,19 @@
 package sorm.persisted
 
+import org.slf4j.LoggerFactory
 import sorm._
 import reflection._
 
-import sext._, embrace._
-import com.typesafe.scalalogging.slf4j.{StrictLogging => Logging}
+import sext._
 
-object PersistedClass extends Logging {
+object PersistedClass {
+  val logger = LoggerFactory.getLogger(getClass.getName)
 
   import reflect.runtime.universe._
   import scala.tools.reflect.ToolBox
 
   private var generateNameCounter = 0
-  private def generateName() 
+  private def generateName()
     = synchronized {
         generateNameCounter += 1
         "PersistedAnonymous" + generateNameCounter
@@ -35,7 +36,7 @@ object PersistedClass extends Logging {
         = "val id : Long" +: sourceArgSignatures
 
       val copyMethodArgSignatures
-        = sourceArgs.map{ case (n, r) => 
+        = sourceArgs.map{ case (n, r) =>
             n + " : " + r.signature + " = " + n
           }
 
@@ -48,29 +49,29 @@ object PersistedClass extends Logging {
 
       "class " + name + "\n" +
       ( "( " + newArgSignatures.mkString(",\n").indent(2).trim + " )\n" +
-        "extends " + r.signature + "( " + 
-        sourceArgs.map{_._1}.mkString(", ") + 
+        "extends " + r.signature + "( " +
+        sourceArgs.map{_._1}.mkString(", ") +
         " )\n" +
-        "with " + Reflection[Persisted].signature + "\n" + 
+        "with " + Reflection[Persisted].signature + "\n" +
         "{\n" +
         (
           "type T = " + r.signature + "\n" +
           "override def mixoutPersisted[ T ]\n" +
           ( "= ( id, new " + r.signature + "(" + oldArgNames.mkString(", ") + ").asInstanceOf[T] )" ).indent(2) + "\n" +
           "override def copy\n" +
-          ( "( " + 
-            copyMethodArgSignatures.mkString(",\n").indent(2).trim + 
+          ( "( " +
+            copyMethodArgSignatures.mkString(",\n").indent(2).trim +
             " )\n" +
-            "= " + "new " + name + "( " + 
-            newArgNames.mkString(", ") + 
+            "= " + "new " + name + "( " +
+            newArgNames.mkString(", ") +
             " )\n"
           ) .indent(2) + "\n" +
           "override def productElement ( n : Int ) : Any\n" +
-          ( "= " + 
+          ( "= " +
             ( "n match {\n" +
               ( ( for { (n, i) <- newArgNames.view.zipWithIndex }
                   yield "case " + i + " => " + n
-                ) :+ 
+                ) :+
                 "case _ => throw new IndexOutOfBoundsException(n.toString)"
               ).mkString("\n").indent(2) + "\n" +
               "}"

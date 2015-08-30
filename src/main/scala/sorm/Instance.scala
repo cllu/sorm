@@ -9,7 +9,6 @@ import jdbc._
 
 import sext._, embrace._
 import reflect.runtime.universe._
-import com.typesafe.scalalogging.slf4j.{StrictLogging => Logging}
 
 /**
  * The instance of SORM
@@ -40,7 +39,7 @@ class Instance
 
 object Instance {
 
-  trait Api extends Logging {
+  trait Api {
 
     protected val connector : Connector
 
@@ -204,7 +203,6 @@ object Instance {
       poolSize : Int = 1,
       initMode : InitMode = InitMode.Create,
       timeout : Int )
-    extends Logging
   {
     import core.Initialization._
 

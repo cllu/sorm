@@ -1,11 +1,8 @@
 package sorm.jdbc
 
-import com.typesafe.scalalogging.slf4j.{StrictLogging => Logging}
-import java.sql.ResultSet
 
 class JdbcConnectionSimulator
   extends JdbcConnection(null)
-  with Logging
   {
     override def executeQuery
       [ T ]
@@ -19,7 +16,7 @@ class JdbcConnectionSimulator
 
     override def executeUpdateAndGetGeneratedKeys
       ( stmt : Statement )
-      : List[IndexedSeq[Any]] 
+      : List[IndexedSeq[Any]]
       = {
         println(stmt.toString)
         List(Vector(777l))

@@ -1,5 +1,6 @@
 package sorm.core
 
+import org.slf4j.LoggerFactory
 import sorm._
 import reflection._
 import mappings._
@@ -7,9 +8,9 @@ import jdbc._
 import tableSorters._
 
 import sext._, embrace._
-import com.typesafe.scalalogging.slf4j.{StrictLogging => Logging}
 
-object Initialization extends Logging {
+object Initialization {
+  val logger = LoggerFactory.getLogger(getClass.getName)
 
   def validateMapping ( mappings : Stream[EntityMapping] ) : Stream[String]
     = mappings

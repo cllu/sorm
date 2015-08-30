@@ -8,9 +8,8 @@ import sorm.persisted._
 import sorm.abstractSql.{AbstractSql => AS}
 import sorm.abstractSql.Combinators._
 import Query._
-import com.typesafe.scalalogging.slf4j.{StrictLogging => Logging}
 
-object AbstractSqlComposition extends Logging {
+object AbstractSqlComposition {
 
   def primaryKeySelect
     ( query : Query )
@@ -68,40 +67,40 @@ object AbstractSqlComposition extends Logging {
         case Filter(LargerOrEqual, m: ValueMapping, v) =>
           comparing( m, AS.LargerOrEqual, v )
 
-        case Filter(Smaller, m: ValueMapping, v) => 
+        case Filter(Smaller, m: ValueMapping, v) =>
           comparing( m, AS.Smaller, v )
 
         case Filter(SmallerOrEqual, m: ValueMapping, v) =>
           comparing( m, AS.SmallerOrEqual, v )
 
-        case Filter(Like, m: ValueMapping, v) => 
+        case Filter(Like, m: ValueMapping, v) =>
           comparing( m, AS.Like, v )
 
-        case Filter(NotLike, m: ValueMapping, v) => 
+        case Filter(NotLike, m: ValueMapping, v) =>
           comparing( m, AS.NotLike, v )
 
-        case Filter(Regex, m: ValueMapping, v) => 
+        case Filter(Regex, m: ValueMapping, v) =>
           comparing( m, AS.Regexp, v )
 
         case Filter(NotRegex, m: ValueMapping, v) =>
           comparing( m, AS.NotRegexp, v )
 
-        case Filter(In, m, v: Iterable[_]) => 
+        case Filter(In, m, v: Iterable[_]) =>
           if( v.nonEmpty ) v.map(equaling(m, _)).reduce(_ | _)
           else everFalse(m)
 
-        case Filter(NotIn, m, v: Iterable[_]) => 
+        case Filter(NotIn, m, v: Iterable[_]) =>
           if( v.nonEmpty ) v.map(notEqualing(m, _)).reduce(_ & _)
           else everTrue(m)
 
-        case Filter(Contains, m: SeqMapping, v) => 
-          empty(m) && including(m, Iterable(v)) 
+        case Filter(Contains, m: SeqMapping, v) =>
+          empty(m) && including(m, Iterable(v))
 
-        case Filter(Contains, m: SetMapping, v) => 
-          empty(m) && including(m, Iterable(v)) 
+        case Filter(Contains, m: SetMapping, v) =>
+          empty(m) && including(m, Iterable(v))
 
-        case Filter(Contains, m: MapMapping, v) => 
-          empty(m) && including(m, Iterable(v)) 
+        case Filter(Contains, m: MapMapping, v) =>
+          empty(m) && including(m, Iterable(v))
 
         case Filter(Constitutes, m: SeqMapping, v) => ???
 
@@ -109,13 +108,13 @@ object AbstractSqlComposition extends Logging {
 
         case Filter(Constitutes, m: MapMapping, v) => ???
 
-        case Filter(Includes, m: SeqMapping, v: Iterable[_]) => 
+        case Filter(Includes, m: SeqMapping, v: Iterable[_]) =>
           empty(m) && including(m, v)
 
-        case Filter(Includes, m: SetMapping, v: Iterable[_]) => 
+        case Filter(Includes, m: SetMapping, v: Iterable[_]) =>
           empty(m) && including(m, v)
 
-        case Filter(Includes, m: MapMapping, v: Iterable[_]) => 
+        case Filter(Includes, m: MapMapping, v: Iterable[_]) =>
           empty(m) && including(m, v)
 
         case Filter(f, m, v) =>
