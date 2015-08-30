@@ -11,7 +11,7 @@ This fork has the following changes:
 
 - Add support for JValue from json4s, which will be converted to String internally
 - Use Java 8 time instead of joda-time
-- remove joda-convert
+- remove dependencies on joda-convert and guava
 - use sbt instead of maven
 - use slf4j instead of scala-logging
 - TODO: remove dependencies on sext and embrace

@@ -9,3 +9,5 @@ before_script:
   - mysql -e 'create database sorm_test;'
 install: 
   mvn install -DskipTests=true -Dgpg.skip=true
+script:
+  mvn test
