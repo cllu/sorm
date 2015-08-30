@@ -6,7 +6,7 @@
 
   <groupId>com.chunlianglyu.sorm</groupId>
   <artifactId>sorm</artifactId>
-  <version>0.3.18</version>
+  <version>0.3.18-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>SORM</name>
