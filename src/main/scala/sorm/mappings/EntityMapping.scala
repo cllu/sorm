@@ -8,9 +8,9 @@ import jdbc.ResultSetView
 import persisted.Persisted
 import reflection.Reflection
 
-class EntityMapping 
-  ( val reflection : Reflection, 
-    val membership : Option[Membership], 
+class EntityMapping
+  ( val reflection : Reflection,
+    val membership : Option[Membership],
     val settings : Map[Reflection, EntitySettings] )
   extends MasterTableMapping {
 
@@ -18,10 +18,8 @@ class EntityMapping
     = reflection.properties.map{case (n, r) => n -> Mapping(r, Membership.EntityProperty(n, this), settings)}
   lazy val mappings // todo: add id
     = properties.values.toStream
-  lazy val primaryKeyColumns
-    = id.column +: Stream()
-  lazy val id
-    = new ValueMapping(Reflection[Long], Some(Membership.EntityId(this)), settings)
+  lazy val primaryKeyColumns = id.column +: Stream()
+  lazy val id = new ValueMapping(Reflection[Long], Some(Membership.EntityId(this)), settings)
   lazy val generatedColumns = id.column +: Stream()
 
   def parseResultSet(rs: ResultSetView, c: DriverConnection)

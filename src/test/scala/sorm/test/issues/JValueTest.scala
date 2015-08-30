@@ -1,5 +1,7 @@
 package sorm.test.issues
 
+import java.time.Instant
+
 import org.json4s.JsonAST.JValue
 import org.json4s._
 import org.json4s.JsonDSL._
@@ -13,7 +15,8 @@ class JValueTest extends FunSuite with ShouldMatchers {
 
   test("JValue Test"){
     val db = new Instance (
-      entities = Set(Entity[User]()),
+      entities = Set(Entity[User](), Entity[UserGroup](), Entity[Permission](),
+        Entity[Site](), Entity[Post](), Entity[Page](), Entity[Asset](), Entity[Photo]()),
       url = "jdbc:h2:mem:testJValue",
       initMode = InitMode.Create,
       poolSize = 20
@@ -29,4 +32,12 @@ class JValueTest extends FunSuite with ShouldMatchers {
 }
 object JValueTest {
   case class User(jvalue: JValue)
+
+  case class UserGroup(name: String, url: String)
+  case class Permission(user: User, userGroup: UserGroup, name: String, permission: Boolean)
+  case class Site(title: String)
+  case class Post(title: String, body: String)
+  case class Page(title: String, body: String)
+  case class Asset(title: String, bytes: String)
+  case class Photo(title: String, bytes: String, url: String)
 }

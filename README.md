@@ -14,13 +14,14 @@ This fork has the following changes:
 - remove dependencies on joda-convert and guava
 - use sbt instead of maven
 - use slf4j instead of scala-logging
+- `lazy val` and `implicit val` will be skipped 
 - TODO: remove dependencies on sext and embrace
 
 
-The fork is not published, so you need to compile and install locally:
+The fork is not published, so you need to compile and install locally (to local ivy2 cache):
 
-    % mvn install -DskipTests=true -Dgpg.skip=true
-    sbt publish-local
+    $ # mvn install -DskipTests=true -Dgpg.skip=true 
+    $ sbt publish-local
     
 Then use a new groupId
     

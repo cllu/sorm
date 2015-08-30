@@ -208,9 +208,12 @@ object Instance {
 
     protected val connector = new Connector(url, user, password, poolSize, timeout)
 
+    var tic = System.currentTimeMillis()
     //  Validate entities (must be prior to mappings creation due to possible mappingkind detection errors):
     validateEntities(entities.toSeq).headOption.map(new ValidationException(_)).foreach(throw _)
+    println(s"validate entities using: ${(System.currentTimeMillis()-tic)}")
 
+    tic = System.currentTimeMillis()
     protected val mappings
       = {
         val settings
@@ -224,15 +227,23 @@ object Instance {
           .zipBy{ new EntityMapping(_, None, settings) }
           .toMap
       }
+    println(s"creating mapping using: ${(System.currentTimeMillis()-tic)}")
 
+    tic = System.currentTimeMillis()
     // Validate input:
     mappings.values.toStream $ validateMapping map (new ValidationException(_)) foreach (throw _)
+    println(s"validate mapping using: ${(System.currentTimeMillis()-tic)}")
 
+    tic = System.currentTimeMillis()
     // Initialize a db schema:
     initializeSchema(mappings.values, connector, initMode)
+    println(s"initialing schema using: ${(System.currentTimeMillis()-tic)}")
 
+    tic = System.currentTimeMillis()
     // Precache persisted classes (required for multithreading)
-    entities.foreach(_.reflection $ PersistedClass.apply)
+    //entities.foreach(_.reflection $ PersistedClass.apply)
+    PersistedClass.applyAll(entities)
+    println(s"precaching entities using: ${(System.currentTimeMillis()-tic)}")
 
   }
   class ValidationException ( m : String ) extends SormException(m)

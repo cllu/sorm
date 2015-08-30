@@ -40,6 +40,13 @@ class ReflectionSuite extends FunSuite with ShouldMatchers {
   test("Generics have effect on hashCode"){
     Reflection[Seq[Int]].hashCode should not equal(Reflection[Seq[Any]].hashCode)
   }
+  test("Skip lazy val") {
+    assert(Reflection[WithLazy].properties.contains("name"))
+    assert(!Reflection[WithLazy].properties.contains("nameInitials"))
+  }
+  test("Skip implicit val") {
+    assert(!Reflection[WithImplicit].properties.contains("ttt"))
+  }
   test("Identical reflections should have same hashCode"){
     Reflection[Artist].properties("genres").generics(0).hashCode
       .should(equal(Reflection[Genre].hashCode))
@@ -123,6 +130,12 @@ object ReflectionSuite {
   case class Artist(id: Int, name: String, genres: Set[Genre], tags: Set[String]) {
     def this() = this(0, "", Set(), Set())
     def this(id: Int) = this(id, "", Set(), Set())
+  }
+  case class WithLazy(name: String) {
+    lazy val nameInitials = ""
+  }
+  case class WithImplicit(name: String) {
+    implicit val ttt = "ttt"
   }
   object StaticWrapper {
     class WrappedClass
