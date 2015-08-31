@@ -1,9 +1,9 @@
 package sext
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
+import org.scalatest.matchers.ShouldMatchers
 
 @RunWith(classOf[JUnitRunner])
 class Test extends FunSuite with ShouldMatchers {
@@ -14,7 +14,7 @@ class Test extends FunSuite with ShouldMatchers {
     val cs = List("c1", "c2", "c3")
     val ds = List("d1", "d2", "d3")
 
-    
+
     (as, bs, cs, ds).zipped.filterNot(_._1 == "a2").unzip4 should equal ( (List("a1", "a3"), List("b1", "b3"), List("c1", "c3"), List("d1", "d3")) )
 
   }
@@ -49,6 +49,7 @@ object Test {
   trait B
 
   import org.scalatest.matchers._
+
   import reflect._
   def beInstanceOf [A : ClassTag]
     = Matcher { x : Any =>

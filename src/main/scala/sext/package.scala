@@ -1,9 +1,9 @@
 package sext
 
-import util.Try
-import reflect.runtime.universe._
-import reflect.runtime.currentMirror
-import collection.GenTraversableOnce
+import scala.collection.GenTraversableOnce
+import scala.reflect.runtime.currentMirror
+import scala.reflect.runtime.universe._
+import scala.util.Try
 
 object `package` {
 

@@ -1,13 +1,11 @@
 package sorm.driver
 
-import sext._, embrace._
-
-import sorm._
-import sql._, Sql._
+import embrace._
+import sorm.sql.Sql._
 
 trait StdModify { self: StdConnection with StdStatement =>
 
-  def update 
+  def update
     ( table : String, values : Iterable[(String, Any)], pk : Iterable[(String, Any)] )
     {
       val exprs = values.toStream.map{case (c, v) => SetExpression(Column(c), v)}

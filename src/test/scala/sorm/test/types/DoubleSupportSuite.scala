@@ -1,7 +1,8 @@
 package sorm.test.types
 
 import org.scalatest._
-import sorm._, test._
+import sorm._
+import sorm.test._
 
 @org.junit.runner.RunWith(classOf[junit.JUnitRunner])
 class DoubleSupportSuite extends FunSuite with ShouldMatchers with MultiInstanceSuite {

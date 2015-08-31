@@ -2,10 +2,12 @@ package sorm.driver
 
 import java.time.Instant
 
-import sorm._, ddl._, jdbc._
-import sext._, embrace._
+import embrace._
+import sext._
 import sorm.core.SormException
-import sql.Sql
+import sorm.ddl._
+import sorm.jdbc._
+import sorm.sql.Sql
 
 class Hsqldb (protected val connection : JdbcConnection)
   extends DriverConnection

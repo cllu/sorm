@@ -1,10 +1,6 @@
 package sorm.mappings
 
-import sext._, embrace._
-
-import sorm._
-import reflection._
-import ddl._
+import sorm.ddl._
 
 trait ColumnMapping extends Mapping {
   def columnsForContainer = column +: Stream()

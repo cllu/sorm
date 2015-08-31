@@ -1,10 +1,10 @@
 package sorm.test.features
 
 import org.scalatest._
-import sorm.{Persistable, Entity}
-import RegexTest._
 import sorm.core.DbType
 import sorm.test.MultiInstanceSuite
+import sorm.test.features.RegexTest._
+import sorm.{Entity, Persistable}
 
 @org.junit.runner.RunWith(classOf[junit.JUnitRunner])
 class RegexTest extends FunSuite with ShouldMatchers with MultiInstanceSuite {

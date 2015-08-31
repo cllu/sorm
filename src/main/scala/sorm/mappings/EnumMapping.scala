@@ -1,11 +1,9 @@
 package sorm.mappings
 
-import sext._, embrace._
-import sorm._
-import driver.DriverConnection
-import reflection._
-import ddl._
-import core._
+import embrace._
+import sorm.ddl._
+import sorm.driver.DriverConnection
+import sorm.reflection._
 
 class EnumMapping
   ( val reflection : Reflection,
@@ -18,7 +16,7 @@ class EnumMapping
     private lazy val values : Map[Short, Enumeration#Value]
       = reflection.containerObject.get.asInstanceOf[Enumeration].values
           .view.map( v => v.id.toShort -> v ).toMap
-    def columnType 
+    def columnType
       = ColumnType.SmallInt
     def valueFromContainerRow ( data : String => Any, connection : DriverConnection )
       = data(memberName).asInstanceOf[Short] $ values

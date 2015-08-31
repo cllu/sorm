@@ -1,9 +1,7 @@
 package sorm.test
 
-import java.sql.SQLException
-
-import sorm._, core._
-import sext._, embrace._
+import sorm._
+import sorm.core._
 
 object TestingInstances {
   private def url ( t : DbType )

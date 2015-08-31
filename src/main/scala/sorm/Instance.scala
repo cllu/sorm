@@ -1,14 +1,12 @@
 package sorm
 
-import sorm._
-import core._
-import persisted._
-import reflection._
-import mappings._
-import jdbc._
+import embrace._
+import sext._
+import sorm.core._
+import sorm.mappings._
+import sorm.reflection._
 
-import sext._, embrace._
-import reflect.runtime.universe._
+import scala.reflect.runtime.universe._
 
 /**
  * The instance of SORM

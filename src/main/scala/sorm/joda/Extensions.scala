@@ -1,6 +1,6 @@
 package sorm.joda
 
-import java.time.{LocalDate, LocalTime, Instant}
+import java.time.{Instant, LocalDate, LocalTime}
 
 object Extensions {
 

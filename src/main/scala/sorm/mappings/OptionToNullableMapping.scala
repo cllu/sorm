@@ -1,11 +1,8 @@
 package sorm.mappings
 
-import sext._, embrace._
-
-import sorm._
-import driver.DriverConnection
-import core._
-import reflection._
+import embrace._
+import sorm.driver.DriverConnection
+import sorm.reflection._
 
 class OptionToNullableMapping
   ( val reflection : Reflection,

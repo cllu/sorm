@@ -1,8 +1,9 @@
 package sorm.driver
 
-import sext._, embrace._
-import sorm.jdbc.{Statement, JdbcConnection}
+import embrace._
+import sext._
 import sorm.ddl.Table
+import sorm.jdbc.{JdbcConnection, Statement}
 
 class H2 (protected val connection : JdbcConnection)
   extends DriverConnection

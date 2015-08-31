@@ -1,18 +1,17 @@
 package sorm.reflection
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
+import org.scalatest.matchers.ShouldMatchers
 
 @RunWith(classOf[JUnitRunner])
 class ScalaApiSuite extends FunSuite with ShouldMatchers {
+  import ScalaApi._
   import ScalaApiSuite._
 
   import reflect.runtime.universe._
   import reflect.runtime.{currentMirror => mirror}
-  import sext._, embrace._
-  import ScalaApi._
 
 
   test("appropriate constructors") {

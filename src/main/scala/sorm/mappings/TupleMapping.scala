@@ -1,13 +1,10 @@
 package sorm.mappings
 
-import sext._, embrace._
+import embrace._
+import sorm.driver.DriverConnection
+import sorm.reflection._
 
-import sorm._
-import driver.DriverConnection
-import reflection._
-import core._
-
-class TupleMapping 
+class TupleMapping
   ( val reflection : Reflection,
     val membership : Option[Membership],
     val settings : Map[Reflection, EntitySettings] )

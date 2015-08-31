@@ -7,7 +7,6 @@ package sorm.abstractSql
  */
 object AbstractSql {
 
-  
   sealed trait Statement
 
   sealed case class Union
@@ -58,7 +57,7 @@ object AbstractSql {
   sealed case class And
     ( left : Condition, right : Condition )
     extends Condition
-  
+
   sealed case class Or
     ( left : Condition, right : Condition )
     extends Condition
@@ -78,12 +77,12 @@ object AbstractSql {
   sealed case class Table
     ( name : String,
       parent : Option[Parent] = None )
-    
+
 
   sealed case class Parent
     ( table : Table,
       bindings : Seq[(String, String)] )
-  
+
 
   sealed trait Operator
   case object Equal extends Operator

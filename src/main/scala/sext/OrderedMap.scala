@@ -1,6 +1,6 @@
 package sext
 
-import collection.immutable.Queue
+import scala.collection.immutable.Queue
 
 object OrderedMap {
   def apply[A, B](elems: (A, B)*) =

@@ -1,14 +1,12 @@
 package sorm.jdbc
 
-import sext._, embrace._
-import java.sql.{Statement => JdbcStatement, SQLTransactionRollbackException, Connection, ResultSet}
-import reflect.ClassTag
+import java.sql.{Connection, SQLTransactionRollbackException, Statement => JdbcStatement}
 
 trait Transactions {
   protected def connection : Connection
 
   private var thread : Thread = _
-  
+
   def transaction [ T ] ( t : => T ) : T
     = transaction(100)(t)
 

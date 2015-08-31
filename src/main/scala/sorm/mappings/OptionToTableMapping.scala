@@ -1,11 +1,8 @@
 package sorm.mappings
 
-import sext._, embrace._
-import sorm._
-import driver.DriverConnection
-import core._
-import jdbc.ResultSetView
-import reflection._
+import sorm.driver.DriverConnection
+import sorm.jdbc.ResultSetView
+import sorm.reflection._
 
 class OptionToTableMapping
   ( val reflection : Reflection,

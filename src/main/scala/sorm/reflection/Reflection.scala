@@ -1,13 +1,12 @@
 package sorm.reflection
 
+import sext._
 import sorm.Persistable
+import sorm.reflection.ScalaApi._
 
-import reflect.runtime.universe._
-import reflect.runtime.{currentMirror => mirror}
-import sext._, embrace._
-import ScalaApi._
-import util.hashing.MurmurHash3
-import collection.immutable.ListMap
+import scala.reflect.runtime.universe._
+import scala.reflect.runtime.{currentMirror => mirror}
+import scala.util.hashing.MurmurHash3
 
 class Reflection ( protected val ambiguousType : Type ) {
 

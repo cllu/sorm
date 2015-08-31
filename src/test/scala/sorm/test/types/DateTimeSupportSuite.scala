@@ -2,15 +2,12 @@ package sorm.test.types
 
 import java.time.Instant
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
-
-import sext._, embrace._
-
+import org.scalatest.matchers.ShouldMatchers
+import sext._
 import sorm._
-import samples._
 import sorm.test.MultiInstanceSuite
 
 @RunWith(classOf[JUnitRunner])

@@ -1,10 +1,9 @@
 package sorm.mappings
 
+import embrace._
 import org.json4s.JValue
-import sext._, embrace._
-import sorm._
-import core.SormException
-import reflection._
+import sorm.core.SormException
+import sorm.reflection._
 
 sealed trait MappingKind
 

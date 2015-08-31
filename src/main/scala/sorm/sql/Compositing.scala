@@ -1,13 +1,11 @@
 package sorm.sql
 
-import sorm._
-import sext._, embrace._
-import Sql._
+import sorm.sql.Sql._
 
 object Compositing {
 
   def alias ( x : Int ) = "t" + x
-  
+
   implicit class StatementCompositingOperations
     ( self : Statement )
     {
@@ -26,7 +24,7 @@ object Compositing {
               other narrow self
             case (self : Union, _) =>
               self.toSelect narrow other
-            case (self : Select, other : Select) 
+            case (self : Select, other : Select)
               if self.what == other.what &&
                  self.from == other.from &&
                  self.join == other.join &&
@@ -55,14 +53,14 @@ object Compositing {
                       on = other.what.asInstanceOf[Seq[Column]]
                              .view
                              .map{_.name}
-                             .map{n => 
+                             .map{n =>
                                Column(n, Some(newAlias)) ->
                                Column(n, self.from.as)
                              },
                       kind = JoinKind.Inner
                     )
               )
-          } 
+          }
       def widen ( other : Statement ) : Statement
         = (self, other) match {
             case (self : Select, other : Select) =>

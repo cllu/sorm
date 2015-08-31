@@ -1,12 +1,10 @@
 package sorm.test.general
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
-
+import org.scalatest.matchers.ShouldMatchers
 import sorm._
-import sext._, embrace._
 import sorm.test.MultiInstanceSuite
 
 object ArtistDbSuite {

@@ -3,8 +3,7 @@ package sorm.jdbc
 import java.sql._
 import java.time.Instant
 
-import sorm._
-import sext._, embrace._
+import embrace._
 
 class ResultSetView
   ( rs : ResultSet )

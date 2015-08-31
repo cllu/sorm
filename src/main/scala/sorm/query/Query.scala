@@ -1,9 +1,6 @@
 package sorm.query
 
-import sorm._
-import reflection._
-import mappings._
-import sext._, embrace._
+import sorm.mappings._
 
 //  in future it should be used as instructions on what to fetch, thus becoming an internal lingua for queries, a frontend abstraction over abstractSql and etc.
 //  TODO:
@@ -24,8 +21,8 @@ object Query {
   }
 
   sealed trait Where
-  
-  sealed trait Composite 
+
+  sealed trait Composite
     extends Where {
       def left : Where
       def right : Where

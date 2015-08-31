@@ -1,16 +1,16 @@
 package sorm.core
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
+import org.scalatest.matchers.ShouldMatchers
 
 
 @RunWith(classOf[JUnitRunner])
 class PathSuite extends FunSuite with ShouldMatchers {
-  
+
   import Path._
-  
+
   test("pathAndRemainder failure"){
     pending
   }

@@ -1,13 +1,12 @@
 package sorm.core
 
+import embrace._
 import org.slf4j.LoggerFactory
+import sext._
 import sorm._
-import reflection._
-import mappings._
-import jdbc._
-import tableSorters._
-
-import sext._, embrace._
+import sorm.mappings._
+import sorm.reflection._
+import sorm.tableSorters._
 
 object Initialization {
   val logger = LoggerFactory.getLogger(getClass.getName)

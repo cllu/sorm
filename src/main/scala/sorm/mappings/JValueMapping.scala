@@ -2,7 +2,7 @@ package sorm.mappings
 
 import embrace._
 import org.json4s.JValue
-import org.json4s.jackson.JsonMethods.{parse, compact, render}
+import org.json4s.jackson.JsonMethods.{compact, parse, render}
 import sorm.ddl._
 import sorm.driver.DriverConnection
 import sorm.reflection._

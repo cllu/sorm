@@ -1,11 +1,5 @@
 package sorm.mappings
 
-import sext._, embrace._
-
-import sorm._
-import reflection.Reflection
-import core._
-
 object `package` {
 
   val regex = "([a-z])([A-Z]+)"

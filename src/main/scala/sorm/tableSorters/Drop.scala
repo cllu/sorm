@@ -1,18 +1,16 @@
 package sorm.tableSorters
 
-import sorm._
-import mappings._
-import jdbc._
+import embrace._
 import sorm.ddl.Table
-import sext._, embrace._
+import sorm.mappings._
 
 object Drop {
 
   def sort
     ( ts : Stream[Table] )
     = {
-      val tableByName 
-        = ts.map{ t => t.name -> t }.toMap 
+      val tableByName
+        = ts.map{ t => t.name -> t }.toMap
 
       def masters
         ( t : Table )

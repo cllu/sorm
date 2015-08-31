@@ -1,9 +1,9 @@
 package sorm.driver
 
-import sext._, embrace._
-import sorm._
-import ddl._
-import jdbc._
+import embrace._
+import sext._
+import sorm.ddl._
+import sorm.jdbc._
 
 trait StdCreateTable { self: StdConnection with StdQuote =>
   def createTable ( table : Table ) {
@@ -11,10 +11,10 @@ trait StdCreateTable { self: StdConnection with StdQuote =>
   }
   private def statement ( table : Table ) : Statement
     = table $ tableDdl $ (Statement(_, Seq()))
-  protected def tableDdl ( t : Table ) : String 
+  protected def tableDdl ( t : Table ) : String
     = {
       val Table(name, columns, primaryKey, uniqueKeys, indexes, foreingKeys) = t
-      val statements = 
+      val statements =
         ( columns.map(columnDdl) ++:
           primaryKey.$(primaryKeyDdl) +:
           indexes.map(indexDdl).filter(_.nonEmpty) ++:
@@ -22,7 +22,7 @@ trait StdCreateTable { self: StdConnection with StdQuote =>
           foreingKeys.map(foreingKeyDdl).toStream
         ) .filter(_.nonEmpty)
 
-      "CREATE TABLE " + quote(name) + 
+      "CREATE TABLE " + quote(name) +
       ( "\n( " + statements.mkString(",\n").indent(2).trim + " )" ).indent(2)
     }
   protected def primaryKeyDdl ( columns : Seq[String] )
@@ -39,7 +39,7 @@ trait StdCreateTable { self: StdConnection with StdQuote =>
         "REFERENCES " + quote(table) + "\n" +
         "( " + bindings.view.unzip._2.map(quote).mkString(", ") + " )\n" +
         "ON DELETE " + referenceOptionDdl(onDelete) + "\n" +
-        "ON UPDATE " + referenceOptionDdl(onUpdate) 
+        "ON UPDATE " + referenceOptionDdl(onUpdate)
       ) .indent(2)
     }
   protected def referenceOptionDdl ( o : ReferenceOption )

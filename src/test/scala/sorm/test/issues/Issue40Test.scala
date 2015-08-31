@@ -4,8 +4,8 @@ import org.scalatest._
 
 @org.junit.runner.RunWith(classOf[junit.JUnitRunner])
 class Issue40Test extends FunSuite with ShouldMatchers {
-  import sorm._
   import Issue40Test._
+  import sorm._
 
   test("All is fine"){
     new Instance (

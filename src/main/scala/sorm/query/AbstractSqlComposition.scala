@@ -1,13 +1,10 @@
 package sorm.query
 
-import sext._, embrace._
-
-import sorm.mappings._
-import sorm.persisted._
-
-import sorm.abstractSql.{AbstractSql => AS}
+import sext._
 import sorm.abstractSql.Combinators._
-import Query._
+import sorm.abstractSql.{AbstractSql => AS}
+import sorm.mappings._
+import sorm.query.Query._
 
 object AbstractSqlComposition {
 

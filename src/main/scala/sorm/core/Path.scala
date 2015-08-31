@@ -1,12 +1,8 @@
 package sorm.core
 
-import sorm._
-import core._
-import query._
-import mappings._
-import sext._, embrace._
-
-import Query.{Filter => QFilter, _}
+import sext._
+import sorm.mappings._
+import sorm.query.Query.{Filter => QFilter, _}
 
 object Path {
 
@@ -76,14 +72,14 @@ object Path {
         //         .map{ QFilter(Operator.Equal, host.key, _) }
         //         .reduceOption{ Or }
         //         .foldLeft( QFilter(Operator.HasSize, host, value.size) ){ And }
-        //     case (Operator.Includes, value : Traversable[_]) 
+        //     case (Operator.Includes, value : Traversable[_])
         //       if value.size > 0 =>
         //       value.view
         //         .map{ QFilter(Operator.Equal, host.key, _) }
         //         .reduce{ Or }
         //     case (Operator.Contains, value : Any) =>
         //       QFilter(Operator.Equal, host.key, value)
-        //   }         
+        //   }
         case (_, Part.Dotted(id) +: tail) =>
           where( mapping(host, id), tail, value, operator )
       }

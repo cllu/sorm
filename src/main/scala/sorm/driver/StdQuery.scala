@@ -1,10 +1,9 @@
 package sorm.driver
 
-import sext._, embrace._
-
+import embrace._
 import sorm._
-import jdbc._
-import sql._
+import sorm.jdbc._
+import sorm.sql._
 
 trait StdQuery { self: StdConnection with StdStatement =>
   import abstractSql.AbstractSql._
@@ -31,7 +30,7 @@ trait StdQuery { self: StdConnection with StdStatement =>
       val columnsToAdd = orderByColumns.diff(whatColumns)
       sql.copy(
         what = sql.what ++ columnsToAdd,
-        groupBy = 
+        groupBy =
           if( sql.what.diff(sql.groupBy) == Nil )
             sql.groupBy ++ columnsToAdd
           else

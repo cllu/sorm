@@ -1,7 +1,9 @@
 package sorm.driver
 
-import sorm._, ddl._, jdbc._
-import sext._, embrace._
+import embrace._
+import sext._
+import sorm.ddl._
+import sorm.jdbc._
 import sorm.sql.Sql
 
 class Postgres (protected val connection : JdbcConnection)

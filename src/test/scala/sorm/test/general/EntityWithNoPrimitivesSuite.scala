@@ -1,7 +1,7 @@
 package sorm.test.general
 
-import sorm._
 import org.scalatest._
+import sorm._
 
 @org.junit.runner.RunWith(classOf[junit.JUnitRunner])
 class EntityWithNoPrimitivesSuite extends FunSuite with ShouldMatchers {

@@ -1,11 +1,8 @@
 package sorm.mappings
 
-import sorm._
-import driver.DriverConnection
-import reflection.Reflection
-import core._
-import scala.Some
-import ddl._
+import sorm.ddl._
+import sorm.driver.DriverConnection
+import sorm.reflection.Reflection
 
 trait Mapping {
   def membership : Option[Membership]

@@ -2,7 +2,7 @@ package sorm.driver
 
 import java.time.Instant
 
-import sorm.jdbc.{JdbcConnection, Statement}
+import sorm.jdbc.Statement
 
 trait StdNow { self: StdConnection =>
   def now() : Instant

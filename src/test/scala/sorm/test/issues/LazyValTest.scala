@@ -1,16 +1,15 @@
 package sorm.test.issues
 
 import org.json4s.JsonAST.JValue
-import org.json4s._
 import org.json4s.JsonDSL._
-import org.json4s.jackson.JsonMethods._
+import org.json4s._
 import org.scalatest._
 import sorm.Persistable
 
 @org.junit.runner.RunWith(classOf[junit.JUnitRunner])
 class LazyValTest extends FunSuite with ShouldMatchers {
-  import sorm._
   import LazyValTest._
+  import sorm._
 
   test("LazyVal and ImplicitVal Test"){
     val db = new Instance (

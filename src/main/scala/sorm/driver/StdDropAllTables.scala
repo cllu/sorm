@@ -1,7 +1,7 @@
 package sorm.driver
 
-import sorm.jdbc.{JdbcConnection, Statement}
 import sorm.core.SormException
+import sorm.jdbc.Statement
 
 trait StdDropAllTables { self: StdConnection with StdListTables with StdQuote =>
   def dropAllTables() {

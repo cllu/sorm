@@ -1,13 +1,12 @@
 package sorm.abstractSql
 
-import sext._, embrace._
-
-import AbstractSql._
+import embrace._
+import sorm.abstractSql.AbstractSql._
 
 object Compositing {
 
-  def intersection 
-    ( left : Statement, right : Statement ) 
+  def intersection
+    ( left : Statement, right : Statement )
     : Statement
     = (left, right) match {
         case (l : Select, r : Select)
@@ -29,9 +28,9 @@ object Compositing {
         case (l, r) =>
           Intersection(l, r)
       }
-  
-  def union 
-    ( left : Statement, right : Statement ) 
+
+  def union
+    ( left : Statement, right : Statement )
     : Statement
     = (left, right) match {
         case (l : Select, r : Select)
@@ -53,7 +52,7 @@ object Compositing {
         case (l, r) =>
           Union(l, r)
       }
-  
+
   private def havingsMergeable
     ( l : Seq[HavingCount], r : Seq[HavingCount] )
     = l.forall{ l =>

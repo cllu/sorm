@@ -1,6 +1,6 @@
 package sorm.test
 
-import org.scalatest.{SequentialNestedSuiteExecution, Suite, BeforeAndAfterAll}
+import org.scalatest.{BeforeAndAfterAll, SequentialNestedSuiteExecution, Suite}
 import sorm.Entity
 import sorm.core.DbType
 

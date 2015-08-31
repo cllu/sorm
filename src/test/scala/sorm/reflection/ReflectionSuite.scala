@@ -1,9 +1,9 @@
 package sorm.reflection
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
+import org.scalatest.matchers.ShouldMatchers
 
 @RunWith(classOf[JUnitRunner])
 class ReflectionSuite extends FunSuite with ShouldMatchers {
@@ -34,7 +34,6 @@ class ReflectionSuite extends FunSuite with ShouldMatchers {
 //    properties(tag[Artist with Mixin].tpe) should equal (properties(tag[Artist].tpe))
 //  }
   test("propertyValue of Persisted"){
-    import sorm.persisted._
     //Reflection[Genre].propertyValue("name", Persisted(Genre("A"), 1)) should equal ("A")
   }
   test("Generics have effect on hashCode"){

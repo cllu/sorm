@@ -1,14 +1,15 @@
 package sorm.test.features
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
-
-import sext._, embrace._
+import org.scalatest.matchers.ShouldMatchers
 import sorm._
-import concurrent._, duration._, ExecutionContext.Implicits._
 import sorm.test.MultiInstanceSuite
+
+import scala.concurrent.ExecutionContext.Implicits._
+import scala.concurrent._
+import scala.concurrent.duration._
 
 object MultiConnectionSupportSuite {
   case class A ( a: Int ) extends Persistable

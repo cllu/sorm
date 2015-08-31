@@ -1,12 +1,11 @@
 package sorm.test
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
-
+import org.scalatest.matchers.ShouldMatchers
 import sorm._
-import core.DbType
+import sorm.core.DbType
 
 @RunWith(classOf[JUnitRunner])
 class TestingInstancesSuite extends FunSuite with ShouldMatchers {

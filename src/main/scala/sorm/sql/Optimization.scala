@@ -1,13 +1,13 @@
 package sorm.sql
 
-import sext._, embrace._
+import embrace._
 import sorm.sql.Sql._
 
 object Optimization {
   def optimized ( s : Statement ) : Statement
     = s match {
         case Union(l, r) => Union(optimized(l), optimized(r))
-        case s : Select => 
+        case s : Select =>
           s.copy(
             join = s.join map {
               case j @ Join(what : Statement, _, _, _) =>

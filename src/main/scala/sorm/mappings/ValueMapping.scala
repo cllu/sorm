@@ -1,12 +1,10 @@
 package sorm.mappings
 
-import java.time.{LocalDate, Instant, LocalTime}
+import java.time.{Instant, LocalDate, LocalTime}
 
-import sorm._
-import driver.DriverConnection
-import core._
-import reflection._
-import ddl._
+import sorm.ddl._
+import sorm.driver.DriverConnection
+import sorm.reflection._
 
 class ValueMapping
   ( val reflection : Reflection,

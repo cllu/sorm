@@ -1,12 +1,9 @@
 package sorm.jdbc
 
-import java.time.{Instant, LocalTime, LocalDate}
+import java.sql.{Connection, PreparedStatement, ResultSet, Statement => JStatement}
+import java.time.{Instant, LocalDate, LocalTime}
 
-import sorm._
-import core.SormException
-import java.sql.{ResultSet, PreparedStatement, Connection, Statement => JStatement}
-
-import sext._, embrace._
+import sorm.core.SormException
 
 object `package` {
 

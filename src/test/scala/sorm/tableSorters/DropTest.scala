@@ -1,22 +1,21 @@
 package sorm.tableSorters
 
-import sorm._
-import reflection._
-import mappings._
-import sext._, embrace._
-import util.Random
-
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
+import org.scalatest.matchers.ShouldMatchers
+import sorm._
+import sorm.mappings._
+import sorm.reflection._
+
+import scala.util.Random
 
 @RunWith(classOf[JUnitRunner])
 class DropTest extends FunSuite with ShouldMatchers {
 
 
-  import samples.ArtistModel._
   import Drop._
+  import samples.ArtistModel._
 
   val settings
     = Map(

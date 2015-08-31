@@ -2,13 +2,12 @@ package sorm.test.general
 
 import java.time.{Instant, LocalDate}
 
-import org.scalatest.{SequentialNestedSuiteExecution, FunSuite}
-import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-
+import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{FunSuite, SequentialNestedSuiteExecution}
 import sorm._
-import core.DbType
+import sorm.core.DbType
 import sorm.test.TestingInstances
 
 @RunWith(classOf[JUnitRunner])

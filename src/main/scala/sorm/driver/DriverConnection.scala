@@ -4,7 +4,7 @@ import java.time.Instant
 
 import sorm._
 import sorm.abstractSql.AbstractSql._
-import jdbc.ResultSetView
+import sorm.jdbc.ResultSetView
 
 /**
  * An abstraction over jdbc connection, instances of which implement sql dialects of different databases

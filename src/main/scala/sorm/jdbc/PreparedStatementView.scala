@@ -1,10 +1,9 @@
 package sorm.jdbc
 
 import java.sql.PreparedStatement
-import java.time.{Instant, LocalTime, LocalDate}
+import java.time.{Instant, LocalDate, LocalTime}
 
-import sorm._
-import joda.Extensions._
+import sorm.joda.Extensions._
 
 class PreparedStatementView
   ( s : PreparedStatement )
