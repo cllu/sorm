@@ -34,8 +34,8 @@ object Initialization {
                 .unfold( a => a.notEmpty.map(a => a -> a.flatMap(_.generics)) )
                 .flatten
 
-          def containsId
-            = e.reflection.properties.keys.exists(_ == "id").option("Property name `id` is not allowed")
+//          def containsId
+//            = e.reflection.properties.keys.exists(_ == "id").option("Property name `id` is not allowed")
 
           def generalTypes
             = descendats
@@ -82,7 +82,7 @@ object Initialization {
 
           Stream() ++
           recursiveEntities ++
-          containsId ++
+          //containsId ++
           generalTypes ++
           traversableTypes ++
           inexistentPropertiesInKeys ++

@@ -26,10 +26,10 @@ class DateTimeSupportSuite extends FunSuite with ShouldMatchers with MultiInstan
         //  time rounded to seconds (for mysql compatibility)
         //val date = new DateTime((db.nowMillis() / 1000d).round * 1000)
         val date = Instant.ofEpochMilli((Instant.now.toEpochMilli / 1000d).round * 1000)
-        val a1 = db.save(A(date))
-        val a2 = db.save(A(date.plusSeconds(3 * 3600)))
-        val a3 = db.save(A(date.minusSeconds(5)))
-        val a4 = db.save(A(date.minusSeconds(50)))
+        val a1 = db.save(A(None, date))
+        val a2 = db.save(A(None, date.plusSeconds(3 * 3600)))
+        val a3 = db.save(A(None, date.minusSeconds(5)))
+        val a4 = db.save(A(None, date.minusSeconds(50)))
 
         db.query[A].whereLarger("a", date.minusSeconds(2)).fetch()
           .should(
@@ -49,5 +49,5 @@ class DateTimeSupportSuite extends FunSuite with ShouldMatchers with MultiInstan
   }
 }
 object DateTimeSupportSuite {
-  case class A ( a : Instant )
+  case class A (var id: Option[Long], a : Instant ) extends Persistable
 }

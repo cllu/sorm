@@ -16,14 +16,14 @@ class OptionEntitySupportSuite extends FunSuite with ShouldMatchers with MultiIn
   def entities = Entity[A]() :: Entity[B]() :: Nil
   instancesAndIds foreach { case (db, dbId) =>
     test(dbId + " - save none"){
-      db.save(B(None))
+      db.save(B(None, None))
     }
   }
 }
 object OptionEntitySupportSuite {
 
-  case class A ( a : Int )
-  case class B ( a : Option[A] )
+  case class A (var id: Option[Long], a : Int ) extends Persistable
+  case class B (var id: Option[Long], a : Option[A] ) extends Persistable
 
 }
 

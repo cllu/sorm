@@ -10,7 +10,7 @@ import Compositing._
 object Combinators {
 
   implicit class StatementOps ( self : Statement ) {
-    def | (other : Statement) 
+    def | (other : Statement)
       = union(self, other)
     def || (other : Traversable[Statement])
       = ( self /: other ) ( union )
@@ -85,7 +85,7 @@ object Combinators {
         case (m : ColumnMapping, v) =>
           def theValue
             = (m, v) match {
-                case (m : EnumMapping, v : Enumeration#Value) => m.dbValues(v) 
+                case (m : EnumMapping, v : Enumeration#Value) => m.dbValues(v)
                 case _ => v
               }
           empty(m).copy(
@@ -99,7 +99,7 @@ object Combinators {
                   )
                 )
           )
-        case (m : EntityMapping, v : Persisted) =>
+        case (m : EntityMapping, v : Persistable) =>
           equaling(m.id, v.id)
         case (m : RangeMapping, v : Range ) =>
           equaling(m.start, v.start) & equaling(m.end, v.end)
@@ -128,7 +128,7 @@ object Combinators {
         case (m : SetMapping, v : Set[_]) =>
           havingCount( m, v.size ) &&!
           havingNotEmptyContainer(m) &&!
-          including(m, v) 
+          including(m, v)
         case (m : MapMapping, v : Map[_, _]) =>
           def crossingWithKey
             = v.view
@@ -146,7 +146,7 @@ object Combinators {
         case (m : ColumnMapping, v) =>
           def theValue
             = (m, v) match {
-                case (m : EnumMapping, v : Enumeration#Value) => m.dbValues(v) 
+                case (m : EnumMapping, v : Enumeration#Value) => m.dbValues(v)
                 case _ => v
               }
           empty(m).copy(
@@ -171,7 +171,7 @@ object Combinators {
                   else None
                 ) reduceOption Or
           )
-        case (m : EntityMapping, v : Persisted) =>
+        case (m : EntityMapping, v : Persistable) =>
           notEqualing(m.id, v.id)
         case (m : RangeMapping, v : Range ) =>
           notEqualing(m.start, v.start) | notEqualing(m.end, v.end)
@@ -188,7 +188,7 @@ object Combinators {
         case (m : SeqMapping, v : Seq[_]) =>
           def disjoint
             = v.view.zipWithIndex
-                .map{case (v, i) => 
+                .map{case (v, i) =>
                   equaling(m.index, i) & notEqualing(m.item, v)
                 }
                 .reduceOption{_ | _}
@@ -212,7 +212,7 @@ object Combinators {
         case (m : MapMapping, v : Map[_, _]) =>
           def disjoint
             = v.view
-                .map{case (k, v) => 
+                .map{case (k, v) =>
                   equaling(m.key, k) & notEqualing(m.value, v)
                 }
                 .reduceOption{_ | _}

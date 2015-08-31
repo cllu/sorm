@@ -15,10 +15,10 @@ class EnumSupportSuite extends FunSuite with ShouldMatchers with MultiInstanceSu
 
   def entities = Set() + Entity[A]()
   instancesAndIds foreach { case (db, dbId) =>
-    val a1 = db.save(A(B.One))
-    val a2 = db.save(A(B.Two))
-    val a3 = db.save(A(B.Three))
-    val a4 = db.save(A(B.Two))
+    val a1 = db.save(A(None, B.One))
+    val a2 = db.save(A(None, B.Two))
+    val a3 = db.save(A(None, B.Three))
+    val a4 = db.save(A(None, B.Two))
     test(dbId + " - Equality query"){
       db.query[A].whereEqual("a", B.Two).fetch()
         .should(
@@ -37,7 +37,7 @@ class EnumSupportSuite extends FunSuite with ShouldMatchers with MultiInstanceSu
 
 }
 object EnumSupportSuite {
-  case class A ( a : B.Value )
+  case class A ( var id: Option[Long], a : B.Value ) extends Persistable
   object B extends Enumeration {
     val One, Two, Three = Value
   }

@@ -12,11 +12,11 @@ import sorm.test.MultiInstanceSuite
 @RunWith(classOf[JUnitRunner])
 class OrderBySuite extends FunSuite with ShouldMatchers with MultiInstanceSuite {
   import OrderBySuite._
-  
+
   def entities = Set(Entity[A]())
   instancesAndIds foreach { case (db, dbId) =>
     val data = 1 to 10
-    data.foreach(v => db.save(A(v)))
+    data.foreach(v => db.save(A(None, v)))
     test(dbId + " - works"){
       db.query[A].order("a").fetch().map(_.a)
         .should(equal(data))
@@ -24,5 +24,5 @@ class OrderBySuite extends FunSuite with ShouldMatchers with MultiInstanceSuite 
   }
 }
 object OrderBySuite {
-  case class A ( a : Int )
+  case class A (var id: Option[Long], a : Int ) extends Persistable
 }

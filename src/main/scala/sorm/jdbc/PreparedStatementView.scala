@@ -29,6 +29,10 @@ class PreparedStatementView
           case v: LocalDate            => s.setDate(i, v.toJava)
           case v: LocalTime            => s.setTime(i, v.toJava)
           case v: Instant              => s.setTimestamp(i, v.toJava)
+
+          // for the id column
+          case v: Option[Long]         => s.setLong(i, v.get)
+
           case null                    => s.setNull(i, java.sql.Types.NULL)
           case _                       => ???
         }

@@ -16,7 +16,7 @@ class BooleanSupportSuite extends FunSuite with ShouldMatchers with MultiInstanc
   def entities = Set(Entity[A]())
   instancesAndIds foreach { case (db, dbId) =>
     val seq = true :: true :: false :: true :: false :: Nil
-    seq.foreach(v => db.save(A(v)))
+    seq.foreach(v => db.save(A(None, v)))
     test(dbId + " - fetching"){
       db.query[A].order("id").fetch().map(_.boo)
         .should(equal(seq))
@@ -28,5 +28,5 @@ class BooleanSupportSuite extends FunSuite with ShouldMatchers with MultiInstanc
   }
 }
 object BooleanSupportSuite {
-  case class A ( boo : Boolean )
+  case class A (var id: Option[Long], boo : Boolean ) extends Persistable
 }

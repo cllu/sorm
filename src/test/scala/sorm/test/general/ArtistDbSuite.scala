@@ -10,16 +10,15 @@ import sext._, embrace._
 import sorm.test.MultiInstanceSuite
 
 object ArtistDbSuite {
-  
-  case class Artist
-    ( names : Map[Locale, Seq[String]],
-      styles : Set[Style] )
+
+  case class Artist (var id: Option[Long], names : Map[Locale, Seq[String]],
+      styles : Set[Style] ) extends Persistable
 
   case class Style
-    ( names : Map[Locale, Seq[String]] )
+    (var id: Option[Long], names : Map[Locale, Seq[String]] ) extends Persistable
 
   case class Locale
-    ( code : String )
+    (var id: Option[Long], code : String ) extends Persistable
 
 }
 @RunWith(classOf[JUnitRunner])
@@ -30,38 +29,36 @@ class ArtistDbSuite extends FunSuite with ShouldMatchers with MultiInstanceSuite
   def entities = Set() + Entity[Artist]() + Entity[Style]() + Entity[Locale]()
 
   instancesAndIds foreach { case (db, dbId) =>
-    val ru 
-      = db.save( Locale("ru") )
-    val en
-      = db.save( Locale("en") )
+    val ru = db.save( Locale(None, "ru") )
+    val en = db.save( Locale(None, "en") )
 
     val rock
-      = db.save( Style( Map( en -> Seq("Rock"),
+      = db.save( Style(None, Map( en -> Seq("Rock"),
                              ru -> Seq("Рок") ) ) )
     val hardRock
-      = db.save( Style( Map( en -> Seq("Hard Rock"),
+      = db.save( Style(None, Map( en -> Seq("Hard Rock"),
                              ru -> Seq("Тяжёлый рок", "Тяжелый рок") ) ) )
     val metal
-      = db.save( Style( Map( en -> Seq("Metal"),
+      = db.save( Style(None, Map( en -> Seq("Metal"),
                              ru -> Seq("Метал") ) ) )
     val grunge
-      = db.save( Style( Map( en -> Seq("Grunge"),
+      = db.save( Style(None, Map( en -> Seq("Grunge"),
                              ru -> Seq("Грандж") ) ) )
 
     val metallica
-      = db.save( Artist( Map( en -> Seq("Metallica"),
+      = db.save( Artist(None, Map( en -> Seq("Metallica"),
                               ru -> Seq("Металика", "Металлика") ),
                          Set( metal, rock, hardRock ) ) )
     val nirvana
-      = db.save( Artist( Map( en -> Seq("Nirvana"),
+      = db.save( Artist(None, Map( en -> Seq("Nirvana"),
                               ru -> Seq("Нирвана") ),
                          Set( rock, hardRock, grunge ) ) )
     val kino
-      = db.save( Artist( Map( en -> Seq("Kino"),
+      = db.save( Artist(None, Map( en -> Seq("Kino"),
                               ru -> Seq("Кино") ),
                          Set( rock ) ) )
     val rollingStones
-      = db.save( Artist( Map( en -> Seq("The Rolling Stones",
+      = db.save( Artist(None, Map( en -> Seq("The Rolling Stones",
                                         "Rolling Stones",
                                         "Rolling Stones, The"),
                               ru -> Seq("Ролинг Стоунз",
@@ -70,11 +67,11 @@ class ArtistDbSuite extends FunSuite with ShouldMatchers with MultiInstanceSuite
                                         "Ролинг Стоунс") ),
                          Set( rock ) ) )
     val direStraits
-      = db.save( Artist( Map( en -> Seq("Dire Straits"),
+      = db.save( Artist(None, Map( en -> Seq("Dire Straits"),
                               ru -> Seq("Даэр Стрэйтс") ),
                          Set( rock ) ) )
     val godsmack
-      = db.save( Artist( Map( en -> Seq("Godsmack"),
+      = db.save( Artist(None, Map( en -> Seq("Godsmack"),
                               ru -> Seq("Годсмэк") ),
                          Set( metal, hardRock, rock ) ) )
 
@@ -119,9 +116,9 @@ class ArtistDbSuite extends FunSuite with ShouldMatchers with MultiInstanceSuite
       db.query[Artist].fetchOne().map{_.id} should be === Some(metallica.id)
     }
     test(dbId + " - Query by id"){
-      db.query[Artist].whereEqual("id", metallica.id).fetchOne()
+      db.query[Artist].whereEqual("id", metallica.id.get).fetchOne()
         .map{_.names.values.head.head}.get should be === "Metallica"
-      db.query[Artist].whereEqual("id", kino.id).fetchOne()
+      db.query[Artist].whereEqual("id", kino.id.get).fetchOne()
         .map{_.names.values.head.head}.get should be === "Kino"
     }
   }

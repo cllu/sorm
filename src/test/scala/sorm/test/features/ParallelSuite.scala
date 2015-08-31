@@ -16,7 +16,7 @@ class ParallelSuite extends FunSuite with ShouldMatchers with MultiInstanceSuite
   def entities = Set(Entity[A]())
   instancesAndIds foreach { case (db, dbId) =>
     val data = 10 to 200
-    data.par.foreach(v => db.save(A(v)))
+    data.par.foreach(v => db.save(A(None, v)))
     test(dbId + " - fetching"){
       db.query[A].order("id").fetch().map(_.a).toSet
         .should(equal(data.toSet))
@@ -25,5 +25,5 @@ class ParallelSuite extends FunSuite with ShouldMatchers with MultiInstanceSuite
 
 }
 object ParallelSuite {
-  case class A ( a : Int )
+  case class A (var id: Option[Long], a : Int ) extends Persistable
 }

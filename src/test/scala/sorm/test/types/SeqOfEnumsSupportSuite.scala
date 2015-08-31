@@ -17,11 +17,11 @@ class SeqOfEnumsSupportSuite extends FunSuite with ShouldMatchers with MultiInst
   def entities =  Set() + Entity[A]()
   instancesAndIds foreach { case (db, dbId) =>
 
-    val a1 = db.save(A(B.Two :: Nil))
-    val a2 = db.save(A(B.Two :: B.Two :: B.One :: Nil))
-    val a3 = db.save(A(B.Three :: Nil))
-    val a4 = db.save(A(B.Two :: Nil))
-    val a5 = db.save(A(Nil))
+    val a1 = db.save(A(None, B.Two :: Nil))
+    val a2 = db.save(A(None, B.Two :: B.Two :: B.One :: Nil))
+    val a3 = db.save(A(None, B.Three :: Nil))
+    val a4 = db.save(A(None, B.Two :: Nil))
+    val a5 = db.save(A(None, Nil))
 
     test(dbId + " - Equal query"){
       db.query[A].whereEqual("a", Seq(B.Two)).fetch()
@@ -66,7 +66,7 @@ class SeqOfEnumsSupportSuite extends FunSuite with ShouldMatchers with MultiInst
 }
 object SeqOfEnumsSupportSuite {
 
-  case class A ( a : Seq[B.Value] )
+  case class A (var id: Option[Long], a : Seq[B.Value] ) extends Persistable
   object B extends Enumeration {
     val One, Two, Three = Value
   }

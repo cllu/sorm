@@ -14,16 +14,16 @@ class SeqOfEntitiesSupportSuite extends FunSuite with ShouldMatchers with MultiI
 
   def entities =  Set() + Entity[A]() + Entity[B]()
   instancesAndIds foreach { case (db, dbId) =>
-    val b1 = db.save(B(23))
-    val b2 = db.save(B(0))
-    val b3 = db.save(B(0))
-    val b4 = db.save(B(12))
-    val b5 = db.save(B(12))
+    val b1 = db.save(B(None,23))
+    val b2 = db.save(B(None, 0))
+    val b3 = db.save(B(None, 0))
+    val b4 = db.save(B(None,12))
+    val b5 = db.save(B(None,12))
 
-    val a1 = db.save(A( Seq() ))
-    val a2 = db.save(A( Seq(b1, b2, b3) ))
-    val a3 = db.save(A( Seq() ))
-    val a4 = db.save(A( Seq(b4) ))
+    val a1 = db.save(A(None, Seq() ))
+    val a2 = db.save(A(None,  Seq(b1, b2, b3) ))
+    val a3 = db.save(A(None, Seq() ))
+    val a4 = db.save(A(None, Seq(b4) ))
 
     test(dbId + " - Non matching equals query") {
       db.query[A].whereEqual("a", Seq(b5)).fetch() should be ('empty)
@@ -72,6 +72,6 @@ class SeqOfEntitiesSupportSuite extends FunSuite with ShouldMatchers with MultiI
 
 }
 object SeqOfEntitiesSupportSuite {
-  case class A ( a : Seq[B] )
-  case class B ( a : Int )
+  case class A (var id: Option[Long], a : Seq[B] ) extends Persistable
+  case class B (var id: Option[Long], a : Int ) extends Persistable
 }

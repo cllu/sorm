@@ -11,7 +11,7 @@ import sorm.test.MultiInstanceSuite
 
 
 object BigDecimalSupportSuite {
-  case class A ( a : BigDecimal )
+  case class A (var id: Option[Long], a : BigDecimal ) extends Persistable
 }
 
 @RunWith(classOf[JUnitRunner])
@@ -21,7 +21,7 @@ class BigDecimalSupportSuite extends FunSuite with ShouldMatchers with MultiInst
   def entities = Set(Entity[A]())
   instancesAndIds foreach { case (db, dbId) =>
     val seq : Seq[BigDecimal] = Seq(2, 2.230192321, 3.3209483290840923839230, 0.213)
-    seq.foreach(v => db.save(A(v)))
+    seq.foreach(v => db.save(A(None, v)))
     test(dbId + " - fetching"){
       db.query[A].order("id").fetch().map(_.a)
         .should(equal(seq))

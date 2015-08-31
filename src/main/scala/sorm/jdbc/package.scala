@@ -35,6 +35,8 @@ object `package` {
           case _ : LocalDate  => DATE
           case _ : LocalTime  => TIME
           case _ : Instant    => TIMESTAMP
+          // For id column
+          case _ : Option[Long] => BIGINT
           case null           => NULL
           case _              => throw new SormException("Value of unsupported type `" + v.getClass + "`: " + v)
         }

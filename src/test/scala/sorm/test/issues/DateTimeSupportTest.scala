@@ -7,6 +7,7 @@ import org.json4s._
 import org.json4s.JsonDSL._
 import org.json4s.jackson.JsonMethods._
 import org.scalatest._
+import sorm.Persistable
 
 @org.junit.runner.RunWith(classOf[junit.JUnitRunner])
 class DateTimeSupportTest extends FunSuite with ShouldMatchers {
@@ -20,7 +21,7 @@ class DateTimeSupportTest extends FunSuite with ShouldMatchers {
       initMode = InitMode.Create,
       poolSize = 20
     )
-    val u = db.save(new User(Instant.now))
+    val u = db.save(new User(None, Instant.now))
     val u2 = db.query[User].fetchOne().get
 
     println(u2.created)
@@ -28,5 +29,5 @@ class DateTimeSupportTest extends FunSuite with ShouldMatchers {
 
 }
 object DateTimeSupportTest {
-  case class User(created: Instant)
+  case class User(var id: Option[Long], created: Instant) extends Persistable
 }

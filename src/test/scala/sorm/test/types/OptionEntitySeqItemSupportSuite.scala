@@ -16,27 +16,27 @@ class OptionEntitySeqItemSupportSuite extends FunSuite with ShouldMatchers with 
 
   def entities = Set() + Entity[A]() + Entity[B]()
   instancesAndIds foreach { case (db, dbId) =>
-    val b1 = db.save(B("abc"))
-    val b2 = db.save(B("cba"))
+    val b1 = db.save(B(None, "abc"))
+    val b2 = db.save(B(None, "cba"))
 
-    val a1 = db.save(A( Seq() ))
-    val a2 = db.save(A( Seq(Some(b1), None, Some(b2)) ))
-    val a3 = db.save(A( Seq(None, Some(b2)) ))
-    val a4 = db.save(A( Seq(None) ))
+    val a1 = db.save(A(None, Seq() ))
+    val a2 = db.save(A(None, Seq(Some(b1), None, Some(b2)) ))
+    val a3 = db.save(A(None, Seq(None, Some(b2)) ))
+    val a4 = db.save(A(None, Seq(None) ))
 
     test(dbId + " - empty seq"){
-      db.fetchById[A](a1.id).seq should be === Seq()
+      db.fetchById[A](a1.id.get).seq should be === Seq()
     }
     test(dbId + " - seq of none"){
-      db.fetchById[A](a4.id).seq should be === Seq(None)
+      db.fetchById[A](a4.id.get).seq should be === Seq(None)
     }
     test(dbId + " - not empty seqs are correct"){
-      db.fetchById[A](a2.id).seq should be === Seq(Some(b1), None, Some(b2))
-      db.fetchById[A](a3.id).seq should be === Seq(None, Some(b2))
+      db.fetchById[A](a2.id.get).seq should be === Seq(Some(b1), None, Some(b2))
+      db.fetchById[A](a3.id.get).seq should be === Seq(None, Some(b2))
     }
   }
 }
 object OptionEntitySeqItemSupportSuite {
-  case class A ( seq : Seq[Option[B]] )
-  case class B ( z : String )
+  case class A (var id: Option[Long], seq : Seq[Option[B]]) extends Persistable
+  case class B (var id: Option[Long], z : String ) extends Persistable
 }

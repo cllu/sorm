@@ -22,8 +22,7 @@ trait DriverConnection {
     : T
   def now() : Instant
   def listTables(): List[String]
-  def dropTable
-    ( table : String )
+  def dropTable ( table : String )
   def dropAllTables()
   def update
     ( table : String, values : Iterable[(String, Any)], pk : Iterable[(String, Any)] )

@@ -11,18 +11,18 @@ import query.Query._
 import persisted._
 import core._
 
-class Querier [ T <: AnyRef : TypeTag ] ( query : Query, connector : Connector ) {
+class Querier [ T <: Persistable : TypeTag ] ( query : Query, connector : Connector ) {
 
   /**
    * Fetch matching entities from db.
-   * @return A stream of entity instances with [[sorm.Persisted]] mixed in
+   * @return A stream of entity instances
    */
-  def fetch () : Stream[T with Persisted]
+  def fetch () : Stream[T]
     = fetchIds()
         .map("id" -> _).map(Map(_))
         .map{ pk =>
           connector.withConnection { cx =>
-            query.mapping.fetchByPrimaryKey(pk, cx).asInstanceOf[T with Persisted]
+            query.mapping.fetchByPrimaryKey(pk, cx).asInstanceOf[T]
           }
         }
 
@@ -37,11 +37,11 @@ class Querier [ T <: AnyRef : TypeTag ] ( query : Query, connector : Connector )
 
   /**
    * Fetch only one entity ensuring that `limit(1)` is applied to the query.
-   * @return An option of entity instance with [[sorm.Persisted]] mixed in
+   * @return An option of entity instance
    */
-  def fetchOne () : Option[T with Persisted]
+  def fetchOne () : Option[T]
     = limit(1).fetch().headOption
-    
+
   /**
    * Fetch only one id ensuring that `limit(1)` is applied to the query.
    */
@@ -52,7 +52,7 @@ class Querier [ T <: AnyRef : TypeTag ] ( query : Query, connector : Connector )
    * Fetch a number of matching entities stored in db.
    */
   //  todo: implement effective version
-  def count () : Int 
+  def count () : Int
     = fetchIds().size
 
   /**
@@ -65,14 +65,14 @@ class Querier [ T <: AnyRef : TypeTag ] ( query : Query, connector : Connector )
   /**
    * Replace all matching entities stored in db with the value provided
    * @param value A value to replace the existing entities with
-   * @return A list of saved entities with [[sorm.Persisted]] mixed in
+   * @return A list of saved entities with [[sorm.Persistable]] mixed in
    */
-  def replace ( value : T ) : List[T with Persisted]
-    = connector.withConnection { cx =>
-        cx.transaction {
-          fetchIds().map(Persisted(value, _)).map(query.mapping.save(_, cx).asInstanceOf[T with Persisted]).toList
-        }
-      }
+//  def replace ( value : T ) : List[T]
+//    = connector.withConnection { cx =>
+//        cx.transaction {
+//          fetchIds().map(Persisted(value, _)).map(query.mapping.save(_, cx).asInstanceOf[T]).toList
+//        }
+//      }
 
   private def copy
     ( where   : Option[Where] = query.where,
@@ -101,7 +101,7 @@ class Querier [ T <: AnyRef : TypeTag ] ( query : Query, connector : Connector )
    * Return a copy of this `Querier` object with a filter generated from DSL.
    *
    * Usage of this method should be accompanied with {{{import sorm.Dsl._}}}
-   * 
+   *
    */
   def where ( f : Querier.Filter )
     : Querier[T]
@@ -116,25 +116,25 @@ class Querier [ T <: AnyRef : TypeTag ] ( query : Query, connector : Connector )
                 case Querier.LargerOrEqual(p, v)  => (p, v, LargerOrEqual)
                 case Querier.Smaller(p, v)        => (p, v, Smaller)
                 case Querier.SmallerOrEqual(p, v) => (p, v, SmallerOrEqual)
-                case Querier.Like(p, v)           => (p, v, Like) 
-                case Querier.NotLike(p, v)        => (p, v, NotLike) 
-                case Querier.Regex(p, v)          => (p, v, Regex) 
-                case Querier.NotRegex(p, v)       => (p, v, NotRegex) 
-                case Querier.In(p, v)             => (p, v, In) 
-                case Querier.NotIn(p, v)          => (p, v, NotIn) 
-                case Querier.Contains(p, v)       => (p, v, Contains) 
-                case Querier.NotContains(p, v)    => (p, v, NotContains) 
-                case Querier.Constitutes(p, v)    => (p, v, Constitutes) 
-                case Querier.NotConstitutes(p, v) => (p, v, NotConstitutes) 
-                case Querier.Includes(p, v)       => (p, v, Includes) 
-                case Querier.NotIncludes(p, v)    => (p, v, NotIncludes) 
+                case Querier.Like(p, v)           => (p, v, Like)
+                case Querier.NotLike(p, v)        => (p, v, NotLike)
+                case Querier.Regex(p, v)          => (p, v, Regex)
+                case Querier.NotRegex(p, v)       => (p, v, NotRegex)
+                case Querier.In(p, v)             => (p, v, In)
+                case Querier.NotIn(p, v)          => (p, v, NotIn)
+                case Querier.Contains(p, v)       => (p, v, Contains)
+                case Querier.NotContains(p, v)    => (p, v, NotContains)
+                case Querier.Constitutes(p, v)    => (p, v, Constitutes)
+                case Querier.NotConstitutes(p, v) => (p, v, NotConstitutes)
+                case Querier.Includes(p, v)       => (p, v, Includes)
+                case Querier.NotIncludes(p, v)    => (p, v, NotIncludes)
                 case _ => throw new SormException("No operator for filter `" + f + "`")
 
               }
           f match {
-            case Querier.Or(l, r) => 
+            case Querier.Or(l, r) =>
               Or(queryWhere(l), queryWhere(r))
-            case Querier.And(l, r) => 
+            case Querier.And(l, r) =>
               And(queryWhere(l), queryWhere(r))
             case _ =>
               pvo match { case (p, v, o) => Path.where(query.mapping, p, v, o) }
@@ -152,7 +152,7 @@ class Querier [ T <: AnyRef : TypeTag ] ( query : Query, connector : Connector )
 
   /**
    * Return a copy of this `Querier` object with an equality filter applied.
-   * 
+   *
    * @param p A string indicating a path to the property on which to filter
    * @param v A value to compare with
    * @return A new instance of `Querier` with this filter applied
@@ -169,51 +169,51 @@ class Querier [ T <: AnyRef : TypeTag ] ( query : Query, connector : Connector )
   def whereLargerOrEqual ( p : String, v : Any )
     = where( p, v, LargerOrEqual )
 
-  def whereSmaller ( p : String, v : Any ) 
+  def whereSmaller ( p : String, v : Any )
     = where( p, v, Smaller )
 
   def whereSmallerOrEqual ( p : String, v : Any )
     = where( p, v, SmallerOrEqual )
 
-  def whereLike( p : String, v : Any ) 
+  def whereLike( p : String, v : Any )
     = where( p, v, Like )
 
-  def whereNotLike( p : String, v : Any ) 
+  def whereNotLike( p : String, v : Any )
     = where( p, v, NotLike )
 
-  def whereRegex( p : String, v : Any ) 
+  def whereRegex( p : String, v : Any )
     = where( p, v, Regex )
 
-  def whereNotRegex( p : String, v : Any ) 
+  def whereNotRegex( p : String, v : Any )
     = where( p, v, NotRegex )
 
-  def whereIn ( p : String, v : Any ) 
+  def whereIn ( p : String, v : Any )
     = where( p, v, In )
 
-  def whereNotIn ( p : String, v : Any ) 
+  def whereNotIn ( p : String, v : Any )
     = where( p, v, NotIn )
 
-  def whereContains ( p : String, v : Any ) 
+  def whereContains ( p : String, v : Any )
     = where( p, v, Contains )
 
-  def whereNotContains ( p : String, v : Any ) 
+  def whereNotContains ( p : String, v : Any )
     = where( p, v, NotContains )
 
-  def whereConstitutes ( p : String, v : Any ) 
+  def whereConstitutes ( p : String, v : Any )
     = where( p, v, Constitutes )
 
-  def whereNotConstitutes ( p : String, v : Any ) 
+  def whereNotConstitutes ( p : String, v : Any )
     = where( p, v, NotConstitutes )
 
-  def whereIncludes ( p : String, v : Any ) 
+  def whereIncludes ( p : String, v : Any )
     = where( p, v, Includes )
 
-  def whereNotIncludes ( p : String, v : Any ) 
+  def whereNotIncludes ( p : String, v : Any )
     = where( p, v, NotIncludes )
 
 }
 object Querier {
-  def apply [ T <: AnyRef : TypeTag ] ( mapping : EntityMapping, connector : Connector )
+  def apply [ T <: Persistable : TypeTag ] ( mapping : EntityMapping, connector : Connector )
     = new Querier[T]( Query(mapping), connector )
 
   sealed trait Filter

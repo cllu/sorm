@@ -1,5 +1,7 @@
 package sorm.reflection
 
+import sorm.Persistable
+
 import reflect.runtime.universe._
 import reflect.runtime.{currentMirror => mirror}
 import sext._, embrace._
@@ -33,40 +35,28 @@ class Reflection ( protected val ambiguousType : Type ) {
   def <:< ( other : Reflection ) = t <:< other.t
   def =:= ( other : Reflection ) = t =:= other.t
 
-  def properties
-    = t.properties
+  def properties = t.properties
         .map{ s => s.decodedName -> Reflection(s.t) }
         .toMap
-  def generics
-    = t match {
+  def generics = t match {
         case t : TypeRef => t.args.view.map(Reflection(_)).toIndexedSeq
         case _ => Vector()
       }
-  def name
-    = s.decodedName
-  def fullName
-    = s.ancestors.foldRight(""){ (s, text) =>
+  def name = s.decodedName
+  def fullName = s.ancestors.foldRight(""){ (s, text) =>
         if( text == "" ) s.decodedName
         else if( s.owner.isClass ) text + "#" + s.decodedName
         else text + "." + s.decodedName
       }
-  def signature : String
-    = t.toString
+  def signature : String = t.toString
 
-  def instantiate
-    ( params : Seq[Any] )
-    : Any
-    = s.instantiate(t.constructors.head, params)
+  def instantiate(params : Seq[Any]): Persistable
+    = s.instantiate(t.constructors.head, params).asInstanceOf[Persistable]
 
-  def propertyValue
-    ( name : String,
-      instance : AnyRef )
-    : Any
+  def propertyValue(name : String, instance : AnyRef): Any
     = instance.getClass.getMethods.find(_.getName == name).get.invoke(instance)
 
-  def propertyValues
-    ( instance : AnyRef )
-    : Map[String, Any]
+  def propertyValues(instance : AnyRef): Map[String, Any]
     = properties.keys.view.zipBy{ propertyValue(_, instance) }.toMap
 
   def primaryConstructorArguments
@@ -100,8 +90,7 @@ class Reflection ( protected val ambiguousType : Type ) {
         case _ => None
       }
 
-  def isCaseClass
-    = s match {
+  def isCaseClass = s match {
         case s : ClassSymbol => s.isCaseClass
         case _ => false
       }

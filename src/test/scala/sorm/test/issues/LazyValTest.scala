@@ -5,6 +5,7 @@ import org.json4s._
 import org.json4s.JsonDSL._
 import org.json4s.jackson.JsonMethods._
 import org.scalatest._
+import sorm.Persistable
 
 @org.junit.runner.RunWith(classOf[junit.JUnitRunner])
 class LazyValTest extends FunSuite with ShouldMatchers {
@@ -19,7 +20,7 @@ class LazyValTest extends FunSuite with ShouldMatchers {
       poolSize = 20
     )
     val json = ("name" -> "XXX")
-    val u = db.save(new User(json))
+    val u = db.save(new User(None, json))
     val u2 = db.query[User].fetchOne().get
 
     intercept[NoSuchElementException] {
@@ -29,11 +30,12 @@ class LazyValTest extends FunSuite with ShouldMatchers {
       db.query[User].whereEqual("format", "XXX").fetchOne().get
     }
     assert(u2.name == "XXX")
+    assert(u2.id.get == 1)
   }
 
 }
 object LazyValTest {
-  case class User(jvalue: JValue) {
+  case class User(var id: Option[Long], jvalue: JValue) extends Persistable {
 
     implicit val formats = DefaultFormats
     lazy val name = (jvalue \ "name").extract[String]

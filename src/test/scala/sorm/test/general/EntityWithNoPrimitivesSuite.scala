@@ -17,9 +17,9 @@ class EntityWithNoPrimitivesSuite extends FunSuite with ShouldMatchers {
       password = "",
       initMode = InitMode.DropAllCreate
     )
-  
-    db.save(Artist(Set("metal"),Set("foo"),Set("bar")))
-  
+
+    db.save(Artist(None, Set("metal"),Set("foo"),Set("bar")))
+
     db.query[Artist]
       .whereEqual("id", 1)
       .fetchOne()
@@ -30,6 +30,6 @@ class EntityWithNoPrimitivesSuite extends FunSuite with ShouldMatchers {
   }
 }
 object EntityWithNoPrimitivesSuite {
-  case class Artist( genres: Set[String] , a: Set[String], b: Set[String] )
+  case class Artist(var id: Option[Long], genres: Set[String] , a: Set[String], b: Set[String] ) extends Persistable
 
 }

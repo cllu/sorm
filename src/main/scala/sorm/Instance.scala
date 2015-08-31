@@ -64,7 +64,7 @@ object Instance {
      * @tparam T The entity type
      * @return The accessor object. An abstraction over all kinds of supported SELECT-queries.
      */
-    def query [ T <: AnyRef : TypeTag ]
+    def query[T <: Persistable : TypeTag]
       = Querier[T](mapping, connector)
 
     /**
@@ -82,10 +82,10 @@ object Instance {
      * @return Matching entities of type `T`
      */
     def fetchWithSql
-      [ T <: AnyRef : TypeTag ]
+      [ T <: Persistable : TypeTag ]
       ( template : String,
         values : Any* )
-      : Seq[T with Persisted]
+      : Seq[T]
       = connector.withConnection{ cx =>
           jdbc.Statement.simple(template, values)
             .$( cx.queryJdbc(_)(_.byNameRowsTraversable.toList).toStream )
@@ -96,7 +96,7 @@ object Instance {
               "The sql-statement must select only the `id`-column"
             )
             .map(
-              mapping[T].fetchByPrimaryKey(_, cx).asInstanceOf[T with Persisted]
+              mapping[T].fetchByPrimaryKey(_, cx).asInstanceOf[T]
             )
             .toList
         }
@@ -104,61 +104,59 @@ object Instance {
     /**
      * Fetch an existing entity by id. Will throw an exception if the entity doesn't exist.
      * @param id The id
-     * @return An entity instance with a [[sorm.Persisted]] trait mixed in
+     * @return An entity instance
      */
     def fetchById
-      [ T <: AnyRef : TypeTag ]
+      [ T <: Persistable : TypeTag ]
       ( id : Long )
-      : T with Persisted
+      : T
       = connector.withConnection{ cx =>
-          id $ ("id" -> _) $ (Map(_)) $ (mapping[T].fetchByPrimaryKey(_, cx).asInstanceOf[T with Persisted])
+          id $ ("id" -> _) $ (Map(_)) $ (mapping[T].fetchByPrimaryKey(_, cx).asInstanceOf[T])
         }
 
     /**
-     * Save the entity. An Abstraction over INSERT and UPDATE-queries. Which one to perform will be decided based on whether the [[sorm.Persisted]] trait is mixed in the value you provide.
+     * Save the entity. An Abstraction over INSERT and UPDATE-queries. Which one to perform will be decided based on whether the [[sorm.Persistable]] trait is mixed in the value you provide.
      * @param value The value to save
-     * @return The saved entity instance with a [[sorm.Persisted]] trait mixed in
+     * @return The saved entity instance
      */
     def save
-      [ T <: AnyRef : TypeTag ]
+      [ T <: Persistable : TypeTag ]
       ( value : T )
-      : T with Persisted
+      : T
       = connector.withConnection{ cx =>
-          mapping[T].save(value, cx).asInstanceOf[T with Persisted]
+          mapping[T].save(value, cx).asInstanceOf[T]
         }
 
     /**
      * Saves the entity by overwriting the existing one if one with the matching unique keys exists and creating a new one otherwise. Executing simply [[sorm.Instance.Api#save]] in a situation of unique keys clash would have thrown an exception. Beware that in case when not all unique keys are matched this method will still throw an exception.
      * @param value The value to save
-     * @return The saved entity instance with a [[sorm.Persisted]] trait mixed in
+     * @return The saved entity instance
      */
-    def saveByUniqueKeys
-      [ T <: AnyRef : TypeTag ]
-      ( value : T )
-      : T with Persisted
-      = (mapping[T].uniqueKeys.flatten zipBy value.reflected.propertyValue)
-          //  todo: check the unique entities
-          .ensuring(_.nonEmpty, "Type doesn't have unique keys")
-          .foldLeft(query){ case (q, (n, v)) => q.whereEqual(n, v) }
-          .$(q =>
-            connector.withConnection{ cx =>
-              cx.transaction {
-                q.fetchOneId()
-                  .map(Persisted(value, _))
-                  .getOrElse(value)
-                  .$(mapping[T].save(_, cx).asInstanceOf[T with Persisted])
-              }
-            }
-          )
+//    def saveByUniqueKeys
+//      [ T <: Persistable : TypeTag ]
+//      ( value : T )
+//      : T
+//      = (mapping[T].uniqueKeys.flatten zipBy value.reflected.propertyValue)
+//          //  todo: check the unique entities
+//          .ensuring(_.nonEmpty, "Type doesn't have unique keys")
+//          .foldLeft(query){ case (q, (n, v)) => q.whereEqual(n, v) }
+//          .$(q =>
+//            connector.withConnection{ cx =>
+//              cx.transaction {
+//                q.fetchOneId()
+//                  .map(Persisted(value, _))
+//                  .getOrElse(value)
+//                  .$(mapping[T].save(_, cx).asInstanceOf[T])
+//              }
+//            }
+//          )
 
     /**
      * Delete a persisted entity
      * @param value The entity
      * @tparam T The entity
      */
-    def delete
-      [ T <: AnyRef : TypeTag ]
-      ( value : T )
+    def delete[T <: Persistable : TypeTag ](value : T)
       = connector.withConnection{ cx => mapping[T].delete(value, cx) }
 
     /**
@@ -172,14 +170,7 @@ object Instance {
      * @tparam T The result of the closure
      * @return The result of the last statement of the passed in closure
      */
-    def transaction [ T ] ( t : => T ) : T
-      = connector.withConnection{ cx => cx.transaction(t) }
-
-    /**
-     * Current time at DB server in milliseconds. Effectively fetches the date only once to calculate the deviation.
-     */
-    @deprecated ("now().getMillis should be used instead")
-    def nowMillis() = now().getNano/1000
+    def transaction[T]( t : => T ): T = connector.withConnection{ cx => cx.transaction(t) }
 
     /**
      * Current DateTime at DB server. Effectively fetches the date only once to calculate the deviation.
@@ -195,6 +186,7 @@ object Instance {
      */
     def close() = connector.close()
   }
+
   abstract class Initialization
     ( entities : Traversable[Entity],
       url : String,
@@ -238,13 +230,6 @@ object Instance {
     // Initialize a db schema:
     initializeSchema(mappings.values, connector, initMode)
     println(s"initialing schema using: ${(System.currentTimeMillis()-tic)}")
-
-    tic = System.currentTimeMillis()
-    // Precache persisted classes (required for multithreading)
-    //entities.foreach(_.reflection $ PersistedClass.apply)
-    PersistedClass.applyAll(entities)
-    println(s"precaching entities using: ${(System.currentTimeMillis()-tic)}")
-
   }
   class ValidationException ( m : String ) extends SormException(m)
 
