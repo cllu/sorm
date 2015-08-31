@@ -4,6 +4,7 @@ import java.sql._
 import java.time.Instant
 
 import embrace._
+import sext._
 
 class ResultSetView
   ( rs : ResultSet )

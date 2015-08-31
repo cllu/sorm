@@ -34,11 +34,10 @@ class EnumSupportSuite extends FunSuite with ShouldMatchers with MultiInstanceSu
   }
 
 }
+
 object EnumSupportSuite {
-  case class A (  a : B.Value ) extends Persistable
+  case class A ( a : B.Value ) extends Persistable
   object B extends Enumeration {
     val One, Two, Three = Value
   }
-
-
 }
