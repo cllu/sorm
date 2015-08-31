@@ -1,21 +1,16 @@
-# SORM
+# SORM2
 
+This is my fork of the excellent ORM framework [SORM](http://sorm-framework.org).
 SORM is an object-relational mapping framework designed to eliminate boilerplate and maximize productivity. 
 It is absolutely abstracted from relational side, automatically creating database tables,
   emitting queries, inserting, updating and deleting records. 
-This all functionality is presented to the user with a simple API around standard Scala's case classes. 
+This all functionality is presented to the user with a simple API around standard Scala's case classes.
 
-For more info, tutorials and documentation please visit the [official site](http://sorm-framework.org).
-
-
-The fork is not published, so you need to compile and install locally (to local ivy2 cache):
-
-    $ # mvn install -DskipTests=true -Dgpg.skip=true 
-    $ sbt publish-local
+This fork is strongly opinionated, very unstable, and everything may change overnight.
+If you still want to use it, add the following lines to your sbt settings:
     
-Then use a new groupId
-    
-    libraryDependencies += "com.chunlianglyu.sorm" %% "sorm" % "0.3.18-SNAPSHOT"
+    resolvers += "Chunliang's Maven Repository" at "https://repo.chunlianglyu.com"
+    libraryDependencies += "com.chunlianglyu.sorm2" %% "sorm2" % "0.4.0"
     
 ## Differences with SORM
 

@@ -4,8 +4,8 @@ import sbt.Keys._
 object Build extends Build {
   // factor out common settings into a sequence
   lazy val commonSettings = Seq(
-    organization := "com.chunlianglyu.sorm",
-    version := "0.3.18-SNAPSHOT",
+    organization := "com.chunlianglyu.sorm2",
+    version := "0.4.0",
     // set the Scala version used for the project
     scalaVersion := "2.11.7"
   )
@@ -15,10 +15,12 @@ object Build extends Build {
     base = file("."),
     settings = commonSettings ++ Seq(
       // set the name of the project
-      name := "Sorm",
+      name := "sorm2",
 
       // append -deprecation to the options passed to the Scala compiler
       scalacOptions += "-deprecation",
+
+      publishTo := Some(Resolver.file("file",  new File(Path.userHome.absolutePath+"/Projects/repo.chunlianglyu.com"))),
 
       // Exclude transitive dependencies, e.g., include log4j without including logging via jdmk, jmx, or jms.
       libraryDependencies ++= Seq(
