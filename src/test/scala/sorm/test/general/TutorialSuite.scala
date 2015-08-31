@@ -22,31 +22,31 @@ class TutorialSuite extends FunSuite with ShouldMatchers with MultiInstanceSuite
 
   instancesAndIds foreach { case (db, dbId) =>
     //  create locales:
-    val ru = db.save( Locale(None, "ru") )
-    val en = db.save( Locale(None, "en") )
+    val ru = db.save( Locale( "ru") )
+    val en = db.save( Locale( "en") )
 
     //  create genres:
-    val rock      = db.save( Genre(None,  Map( en -> Seq("Rock"),
+    val rock      = db.save( Genre(  Map( en -> Seq("Rock"),
                                          ru -> Seq("Рок") ) ) )
-    val hardRock  = db.save( Genre(None, Map( en -> Seq("Hard Rock"),
+    val hardRock  = db.save( Genre( Map( en -> Seq("Hard Rock"),
                                          ru -> Seq("Тяжёлый рок",
                                                    "Тяжелый рок") ) ) )
-    val metal     = db.save( Genre(None,  Map( en -> Seq("Metal"),
+    val metal     = db.save( Genre(  Map( en -> Seq("Metal"),
                                          ru -> Seq("Метал") ) ) )
-    val grunge    = db.save( Genre(None,  Map( en -> Seq("Grunge"),
+    val grunge    = db.save( Genre(  Map( en -> Seq("Grunge"),
                                          ru -> Seq("Грандж") ) ) )
 
     //  create artists:
-    db.save( Artist(None, Map( en -> Seq("Metallica"),
+    db.save( Artist( Map( en -> Seq("Metallica"),
                           ru -> Seq("Металика", "Металлика") ),
                      Set( metal, rock, hardRock ) ) )
-    db.save( Artist(None, Map( en -> Seq("Nirvana"),
+    db.save( Artist( Map( en -> Seq("Nirvana"),
                           ru -> Seq("Нирвана") ),
                      Set( rock, hardRock, grunge ) ) )
-    db.save( Artist(None, Map( en -> Seq("Kino"),
+    db.save( Artist( Map( en -> Seq("Kino"),
                           ru -> Seq("Кино") ),
                      Set( rock ) ) )
-    db.save( Artist(None, Map( en -> Seq("The Rolling Stones",
+    db.save( Artist( Map( en -> Seq("The Rolling Stones",
                                     "Rolling Stones",
                                     "Rolling Stones, The"),
                           ru -> Seq("Ролинг Стоунз",
@@ -54,10 +54,10 @@ class TutorialSuite extends FunSuite with ShouldMatchers with MultiInstanceSuite
                                     "Роллинг Стоунс",
                                     "Ролинг Стоунс") ),
                      Set( rock ) ) )
-    db.save( Artist(None, Map( en -> Seq("Dire Straits"),
+    db.save( Artist( Map( en -> Seq("Dire Straits"),
                           ru -> Seq("Даэр Стрэйтс") ),
                      Set( rock ) ) )
-    db.save( Artist(None, Map( en -> Seq("Godsmack"),
+    db.save( Artist( Map( en -> Seq("Godsmack"),
                           ru -> Seq("Годсмэк") ),
                      Set( metal, hardRock, rock ) ) )
 
@@ -89,12 +89,12 @@ class TutorialSuite extends FunSuite with ShouldMatchers with MultiInstanceSuite
   }
 }
 object TutorialSuite {
-  case class Artist (var id: Option[Long], names : Map[Locale, Seq[String]],
+  case class Artist ( names : Map[Locale, Seq[String]],
       genres : Set[Genre] ) extends Persistable
 
   case class Genre
-    (var id: Option[Long], names: Map[Locale, Seq[String]]) extends Persistable
+    ( names: Map[Locale, Seq[String]]) extends Persistable
 
   case class Locale
-    (var id: Option[Long], code : String ) extends Persistable
+    ( code : String ) extends Persistable
 }

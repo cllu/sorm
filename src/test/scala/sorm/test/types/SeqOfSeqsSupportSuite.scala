@@ -17,11 +17,11 @@ class SeqOfSeqsSupportSuite extends FunSuite with ShouldMatchers with MultiInsta
 
   def entities =  Set() + Entity[A]()
   instancesAndIds foreach { case (db, dbId) =>
-    val a1 = db.save(A( None, Seq() ))
-    val a2 = db.save(A( None, Seq( Seq(2, 3), Seq(), Seq(7) ) ))
-    val a3 = db.save(A( None, Seq( Seq() ) ))
-    val a4 = db.save(A( None, Seq( Seq(78) ) ))
-    val a5 = db.save(A( None, Seq() ))
+    val a1 = db.save(A( Seq() ))
+    val a2 = db.save(A( Seq( Seq(2, 3), Seq(), Seq(7) ) ))
+    val a3 = db.save(A( Seq( Seq() ) ))
+    val a4 = db.save(A( Seq( Seq(78) ) ))
+    val a5 = db.save(A( Seq() ))
 
     test(dbId + " - Empty Seq matches empty Seq and not Seq of empty Seq"){
       db.query[A]
@@ -51,5 +51,5 @@ class SeqOfSeqsSupportSuite extends FunSuite with ShouldMatchers with MultiInsta
   }
 }
 object SeqOfSeqsSupportSuite {
-  case class A (var id: Option[Long], a : Seq[Seq[Int]] ) extends Persistable
+  case class A ( a : Seq[Seq[Int]] ) extends Persistable
 }

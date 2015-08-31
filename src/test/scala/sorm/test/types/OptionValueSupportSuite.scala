@@ -16,9 +16,9 @@ class OptionValueSupportSuite extends FunSuite with ShouldMatchers with MultiIns
 
   def entities = Set() + Entity[A]()
   instancesAndIds foreach { case (db, dbId) =>
-    val a1 = db.save(A(None,None))
-    val a2 = db.save(A(None,Some(3)))
-    val a3 = db.save(A(None,Some(7)))
+    val a1 = db.save(A(None))
+    val a2 = db.save(A(Some(3)))
+    val a3 = db.save(A(Some(7)))
 
     test(dbId + " - saved entities are correct"){
       db.fetchById[A](a1.id.get).a should be === None
@@ -47,6 +47,6 @@ class OptionValueSupportSuite extends FunSuite with ShouldMatchers with MultiIns
 }
 object OptionValueSupportSuite {
 
-  case class A (var id: Option[Long], a : Option[Int] ) extends Persistable
+  case class A ( a : Option[Int] ) extends Persistable
 
 }

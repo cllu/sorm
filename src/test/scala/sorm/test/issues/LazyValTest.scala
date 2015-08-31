@@ -20,7 +20,7 @@ class LazyValTest extends FunSuite with ShouldMatchers {
       poolSize = 20
     )
     val json = ("name" -> "XXX")
-    val u = db.save(new User(None, json))
+    val u = db.save(new User(json))
     val u2 = db.query[User].fetchOne().get
 
     intercept[NoSuchElementException] {
@@ -35,7 +35,7 @@ class LazyValTest extends FunSuite with ShouldMatchers {
 
 }
 object LazyValTest {
-  case class User(var id: Option[Long], jvalue: JValue) extends Persistable {
+  case class User( jvalue: JValue) extends Persistable {
 
     implicit val formats = DefaultFormats
     lazy val name = (jvalue \ "name").extract[String]

@@ -18,9 +18,9 @@ class FetchWithSqlSuite extends FunSuite with ShouldMatchers with MultiInstanceS
   override val dbTypes = DbType.H2 :: Nil
   instancesAndIds foreach { case (db, dbId) =>
 
-    val a1 = db.save(A(None, "A" ))
-    val a2 = db.save(A(None, "B" ))
-    val a3 = db.save(A(None, "C" ))
+    val a1 = db.save(A("A" ))
+    val a2 = db.save(A("B" ))
+    val a3 = db.save(A("C" ))
 
     test(dbId + " - general") {
       db.fetchWithSql[A]("select id from a where a=?", "B").head
@@ -42,6 +42,6 @@ class FetchWithSqlSuite extends FunSuite with ShouldMatchers with MultiInstanceS
 }
 object FetchWithSqlSuite {
 
-  case class A (var id: Option[Long], a : String ) extends Persistable
+  case class A ( a : String ) extends Persistable
 
 }

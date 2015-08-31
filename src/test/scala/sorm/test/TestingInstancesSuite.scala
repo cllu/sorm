@@ -14,13 +14,13 @@ class TestingInstancesSuite extends FunSuite with ShouldMatchers {
 
   test("Sequentially accessing instances gets them cleaned up") {
     TestingInstances.instances( Set() + Entity[A](), poolSizes = 1 :: 6 :: 12 :: Nil, dbTypes = DbType.H2 :: Nil )
-      .map { case (db, dbId) => db.save(A(None, 1)) ; db.query[A].count() }
+      .map { case (db, dbId) => db.save(A(1)) ; db.query[A].count() }
       .shouldBe(1 :: 1 :: 1 :: Nil)
   }
 
 }
 object TestingInstancesSuite {
 
-  case class A (var id: Option[Long],  a : Int ) extends Persistable
+  case class A (  a : Int ) extends Persistable
 
 }

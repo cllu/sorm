@@ -39,5 +39,10 @@ package sorm
  * }}}
  */
 trait Persistable {
-  var id: Option[Long]
+  var id: Option[Long] = None
+
+  override def equals(other: Any): Boolean = other match {
+    case other: Persistable => id == other.id
+    case _ => false
+  }
 }

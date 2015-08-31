@@ -16,8 +16,8 @@ class RangeSupportSuite extends FunSuite with ShouldMatchers with MultiInstanceS
   def entities =  Set() + Entity[A]()
   instancesAndIds foreach { case (db, dbId) =>
 
-    val a1 = db.save(A(None, 2 to 4 ))
-    val a2 = db.save(A(None, 9 to 1 ))
+    val a1 = db.save(A(2 to 4 ))
+    val a2 = db.save(A(9 to 1 ))
 
     test(dbId + " - saved entities are correct"){
       db.fetchById[A](a1.id.get).a should equal (2 to 4)
@@ -34,7 +34,7 @@ class RangeSupportSuite extends FunSuite with ShouldMatchers with MultiInstanceS
         )
     }
     test(dbId + " - 0 to 0 range"){
-      val a = db.save(A(None, 0 to 0))
+      val a = db.save(A(0 to 0))
       db.fetchById[A](a.id.get).a should equal (0 to 0)
     }
 
@@ -42,6 +42,6 @@ class RangeSupportSuite extends FunSuite with ShouldMatchers with MultiInstanceS
 }
 object RangeSupportSuite {
 
-  case class A (var id: Option[Long], a : Range ) extends Persistable
+  case class A ( a : Range ) extends Persistable
 
 }

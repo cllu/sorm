@@ -22,5 +22,11 @@ object Persisted {
     = apply( args, id, Reflection[T]).asInstanceOf[T]
 
   def apply(args : Map[String, Any], id: Long, r: Reflection ): Persistable
-    = r.instantiate(r.primaryConstructorArguments.toStream.unzip._1.map{args.updated("id", Some(id))})
+    = {
+    val node = r.instantiate(r.primaryConstructorArguments.toStream.unzip._1.map{args.updated("id", Some(id))})
+    if (!r.primaryConstructorArguments.contains("id")) {
+      node.id = Some(id)
+    }
+    node
+  }
 }

@@ -10,7 +10,7 @@ class DoubleSupportSuite extends FunSuite with ShouldMatchers with MultiInstance
   def entities = Set(Entity[A]())
   instancesAndIds foreach { case (db, dbId) =>
     val seq : Seq[Double] = Seq(2, 2.230192321, 3.3209483290840923839230, 0.213)
-    seq.foreach(v => db.save(A(None, v)))
+    seq.foreach(v => db.save(A(v)))
     test(dbId + " - fetching"){
       db.query[A].order("id").fetch().map(_.a)
         .should(equal(seq))
@@ -22,5 +22,5 @@ class DoubleSupportSuite extends FunSuite with ShouldMatchers with MultiInstance
   }
 }
 object DoubleSupportSuite {
-  case class A (var id: Option[Long], a : Double ) extends Persistable
+  case class A ( a : Double ) extends Persistable
 }

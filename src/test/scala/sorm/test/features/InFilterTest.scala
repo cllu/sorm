@@ -16,9 +16,9 @@ class InFilterTest extends FunSuite with ShouldMatchers with MultiInstanceSuite 
 
   instancesAndIds foreach { case (db, dbId) =>
 
-    val a1 = db.save(A(None, 1))
-    val a2 = db.save(A(None, 2))
-    val a3 = db.save(A(None, 3))
+    val a1 = db.save(A(1))
+    val a2 = db.save(A(2))
+    val a3 = db.save(A(3))
 
     test(dbId + " - empty value"){
       db.query[A].whereIn("a", Seq()).fetchOne().should(equal(None))
@@ -32,6 +32,6 @@ class InFilterTest extends FunSuite with ShouldMatchers with MultiInstanceSuite 
 }
 object InFilterTest {
 
-  case class A (var id: Option[Long], a : Int ) extends Persistable
+  case class A ( a : Int ) extends Persistable
 
 }

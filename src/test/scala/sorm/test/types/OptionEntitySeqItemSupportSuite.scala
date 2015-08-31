@@ -16,13 +16,13 @@ class OptionEntitySeqItemSupportSuite extends FunSuite with ShouldMatchers with 
 
   def entities = Set() + Entity[A]() + Entity[B]()
   instancesAndIds foreach { case (db, dbId) =>
-    val b1 = db.save(B(None, "abc"))
-    val b2 = db.save(B(None, "cba"))
+    val b1 = db.save(B( "abc"))
+    val b2 = db.save(B( "cba"))
 
-    val a1 = db.save(A(None, Seq() ))
-    val a2 = db.save(A(None, Seq(Some(b1), None, Some(b2)) ))
-    val a3 = db.save(A(None, Seq(None, Some(b2)) ))
-    val a4 = db.save(A(None, Seq(None) ))
+    val a1 = db.save(A(Seq() ))
+    val a2 = db.save(A(Seq(Some(b1), None, Some(b2)) ))
+    val a3 = db.save(A(Seq(None, Some(b2)) ))
+    val a4 = db.save(A(Seq(None) ))
 
     test(dbId + " - empty seq"){
       db.fetchById[A](a1.id.get).seq should be === Seq()
@@ -37,6 +37,6 @@ class OptionEntitySeqItemSupportSuite extends FunSuite with ShouldMatchers with 
   }
 }
 object OptionEntitySeqItemSupportSuite {
-  case class A (var id: Option[Long], seq : Seq[Option[B]]) extends Persistable
-  case class B (var id: Option[Long], z : String ) extends Persistable
+  case class A ( seq : Seq[Option[B]]) extends Persistable
+  case class B ( z : String ) extends Persistable
 }

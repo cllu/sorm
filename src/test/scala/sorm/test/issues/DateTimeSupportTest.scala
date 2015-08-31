@@ -21,7 +21,7 @@ class DateTimeSupportTest extends FunSuite with ShouldMatchers {
       initMode = InitMode.Create,
       poolSize = 20
     )
-    val u = db.save(new User(None, Instant.now))
+    val u = db.save(new User(Instant.now))
     val u2 = db.query[User].fetchOne().get
 
     println(u2.created)
@@ -29,5 +29,5 @@ class DateTimeSupportTest extends FunSuite with ShouldMatchers {
 
 }
 object DateTimeSupportTest {
-  case class User(var id: Option[Long], created: Instant) extends Persistable
+  case class User( created: Instant) extends Persistable
 }

@@ -60,11 +60,13 @@ class EntityMapping
 
       node.id match {
         case Some(id) =>
+          // update
           val pk = Stream(id)
           connection.update(tableName, rowValues, pk $ (primaryKeyColumnNames zip _))
           propertyValues.foreach{ case (n, m, v) => m.update(v, pk, connection) }
           node
         case None =>
+          // insert
           val id = connection.insertAndGetGeneratedKeys(tableName, rowValues).ensuring(_.length == 1).head.asInstanceOf[Long]
           propertyValues.foreach{ case (n, m, v) => m.insert(v, Stream(id), connection) }
           Persisted( propertyValues.map(t => t._1 -> t._3).toMap, id, reflection )

@@ -119,10 +119,7 @@ object Instance {
      * @param value The value to save
      * @return The saved entity instance
      */
-    def save
-      [ T <: Persistable : TypeTag ]
-      ( value : T )
-      : T
+    def save[T <: Persistable : TypeTag](value : T): T
       = connector.withConnection{ cx =>
           mapping[T].save(value, cx).asInstanceOf[T]
         }

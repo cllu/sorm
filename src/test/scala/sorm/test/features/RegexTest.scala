@@ -14,9 +14,9 @@ class RegexTest extends FunSuite with ShouldMatchers with MultiInstanceSuite {
 
   instancesAndIds foreach { case (db, dbId) =>
 
-    val a1 = db.save(User(None, "abc1"))
-    val a2 = db.save(User(None, "abc2"))
-    val a3 = db.save(User(None, "abc3"))
+    val a1 = db.save(User("abc1"))
+    val a2 = db.save(User("abc2"))
+    val a3 = db.save(User("abc3"))
 
     test(dbId + " - regex"){
       db.query[User].whereRegex("fullname", "^abc").count().should(equal(3))
@@ -29,5 +29,5 @@ class RegexTest extends FunSuite with ShouldMatchers with MultiInstanceSuite {
 
 }
 object RegexTest {
-  case class User(var id: Option[Long], fullname: String) extends Persistable
+  case class User( fullname: String) extends Persistable
 }

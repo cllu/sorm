@@ -16,7 +16,7 @@ class OrderBySuite extends FunSuite with ShouldMatchers with MultiInstanceSuite 
   def entities = Set(Entity[A]())
   instancesAndIds foreach { case (db, dbId) =>
     val data = 1 to 10
-    data.foreach(v => db.save(A(None, v)))
+    data.foreach(v => db.save(A(v)))
     test(dbId + " - works"){
       db.query[A].order("a").fetch().map(_.a)
         .should(equal(data))
@@ -24,5 +24,5 @@ class OrderBySuite extends FunSuite with ShouldMatchers with MultiInstanceSuite 
   }
 }
 object OrderBySuite {
-  case class A (var id: Option[Long], a : Int ) extends Persistable
+  case class A ( a : Int ) extends Persistable
 }

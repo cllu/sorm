@@ -9,7 +9,7 @@ import sorm._
 import sorm.test.MultiInstanceSuite
 
 object MultithreadingTest {
-  case class A (var id: Option[Long], a : Int) extends Persistable
+  case class A ( a : Int) extends Persistable
 }
 @RunWith(classOf[JUnitRunner])
 class MultithreadingTest extends FunSuite with ShouldMatchers with MultiInstanceSuite {
@@ -18,10 +18,10 @@ class MultithreadingTest extends FunSuite with ShouldMatchers with MultiInstance
   def entities =  Set() + Entity[A]()
   instancesAndIds foreach { case (db, dbId) =>
 
-    val a1 = db.save(A(None, 1))
-    val a2 = db.save(A(None, 3))
-    val a3 = db.save(A(None, 0))
-    val a4 = db.save(A(None, 3000))
+    val a1 = db.save(A(1))
+    val a2 = db.save(A(3))
+    val a3 = db.save(A(0))
+    val a4 = db.save(A(3000))
 
     test(dbId + " - Parallel queries"){
       Seq(0,1,2,3).par.flatMap{ i => db.query[A].whereEqual("a", i).fetchOne() }.seq

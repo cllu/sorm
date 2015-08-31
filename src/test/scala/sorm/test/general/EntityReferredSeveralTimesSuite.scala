@@ -16,16 +16,16 @@ class EntityReferredSeveralTimesSuite extends FunSuite with ShouldMatchers with 
   def entities = Set() + Entity[A]() + Entity[B]()
   instancesAndIds foreach { case (db, dbId) =>
 
-    val b1 = db.save(B(None, 23))
-    val b2 = db.save(B(None, 0))
-    val b3 = db.save(B(None, 0))
-    val b4 = db.save(B(None, 12))
-    val b5 = db.save(B(None, 12))
+    val b1 = db.save(B( 23))
+    val b2 = db.save(B( 0))
+    val b3 = db.save(B( 0))
+    val b4 = db.save(B( 12))
+    val b5 = db.save(B( 12))
 
-    val a1 = db.save(A(None, b1, Seq(b4, b1)))
-    val a2 = db.save(A(None, b2, Seq(b2)))
-    val a3 = db.save(A(None, b3, Seq(b2)))
-    val a4 = db.save(A(None, b4, Seq(b1)))
+    val a1 = db.save(A(b1, Seq(b4, b1)))
+    val a2 = db.save(A(b2, Seq(b2)))
+    val a3 = db.save(A(b3, Seq(b2)))
+    val a4 = db.save(A(b4, Seq(b1)))
 
     test(dbId + " - Matches on other properties must not be included") {
       db.query[A].whereEqual("b", b2).fetch()
@@ -39,6 +39,6 @@ class EntityReferredSeveralTimesSuite extends FunSuite with ShouldMatchers with 
   }
 }
 object EntityReferredSeveralTimesSuite {
-  case class A (var id: Option[Long], b : B, bs : Seq[B]) extends Persistable
-  case class B (var id: Option[Long], x : Int) extends Persistable
+  case class A ( b : B, bs : Seq[B]) extends Persistable
+  case class B ( x : Int) extends Persistable
 }

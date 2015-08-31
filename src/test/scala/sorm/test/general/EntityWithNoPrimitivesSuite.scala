@@ -18,18 +18,27 @@ class EntityWithNoPrimitivesSuite extends FunSuite with ShouldMatchers {
       initMode = InitMode.DropAllCreate
     )
 
-    db.save(Artist(None, Set("metal"),Set("foo"),Set("bar")))
+    db.save(Artist( Set("metal"),Set("foo"),Set("bar")))
 
-    db.query[Artist]
+    // Copy do not work!
+//    db.query[Artist]
+//      .whereEqual("id", 1)
+//      .fetchOne()
+//      .map(a => a.copy(genres = Set("rock","rnb"), a = Set("myfoo"), b = Set("mybar")))
+//      .map(db.save)
+
+    val node = db.query[Artist]
       .whereEqual("id", 1)
       .fetchOne()
-      .map(a => a.copy(genres = Set("rock","rnb"), a = Set("myfoo"), b = Set("mybar")))
-      .map(db.save)
+      .get
+    val n2 = node.copy(genres = Set("rock","rnb"), a = Set("myfoo"), b = Set("mybar"))
+    n2.id = node.id
+    db.save(n2)
 
     db.query[Artist].whereEqual("id", 1).fetchOne().map(_.b).shouldBe(Some(Set("mybar")))
   }
 }
 object EntityWithNoPrimitivesSuite {
-  case class Artist(var id: Option[Long], genres: Set[String] , a: Set[String], b: Set[String] ) extends Persistable
+  case class Artist( genres: Set[String] , a: Set[String], b: Set[String] ) extends Persistable
 
 }
