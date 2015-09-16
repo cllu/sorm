@@ -1,3 +1,9 @@
+0.4.1
+  - Make slf4j-simple optional
+
+0.4.0
+  - refactor
+  
 0.3.18
   - Make Regex and Like in Postgres case-insensitive
 
