@@ -1,3 +1,7 @@
+0.4.2
+  - Bump json4s-jackso version to v3.3.0.RC5
+  - Remove dependency on scala-compiler
+
 0.4.1
   - Make slf4j-simple optional
 
