@@ -5,7 +5,7 @@ object Build extends Build {
   // factor out common settings into a sequence
   lazy val commonSettings = Seq(
     organization := "com.chunlianglyu.sorm2",
-    version := "0.4.1",
+    version := "0.4.2",
     // set the Scala version used for the project
     scalaVersion := "2.11.7"
   )
@@ -27,7 +27,7 @@ object Build extends Build {
         "com.mchange" % "c3p0" % "0.9.2-pre5",
         "org.slf4j" % "slf4j-api" % "1.7.12",
         "org.slf4j" % "slf4j-simple" % "1.7.2" % "optional",
-        "org.json4s" % "json4s-jackson_2.11" % "3.2.11",
+        "org.json4s" % "json4s-jackson_2.11" % "3.3.0.RC5",
         "postgresql" % "postgresql" % "9.1-901.jdbc4" % "test",
         "org.hsqldb" % "hsqldb" % "2.2.8" % "test",
         "com.h2database" % "h2" % "1.3.168" % "test",
@@ -35,7 +35,6 @@ object Build extends Build {
         "org.scalatest" % "scalatest_2.11" % "2.2.3" % "test",
         "junit" % "junit" % "4.7" % "test",
         "org.scala-lang" % "scala-reflect" % "2.11.7",
-        "org.scala-lang" % "scala-compiler" % "2.11.7",
         "org.scala-lang" % "scala-library" % "2.11.7"
       )
     )

@@ -42,4 +42,4 @@ Caveats:
 
 ---
 
-[![Build Status](https://travis-ci.org/cllu/sorm.svg?branch=master)](https://travis-ci.org/cllu/sorm)
+[![Build Status](https://travis-ci.org/cllu/sorm2.svg?branch=master)](https://travis-ci.org/cllu/sorm2)
