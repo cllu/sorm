@@ -23,14 +23,14 @@ class OptionEntitySeqItemSupportSuite extends FunSuite with ShouldMatchers with 
     val a4 = db.save(A(Seq(None) ))
 
     test(dbId + " - empty seq"){
-      db.fetchById[A](a1.id.get).seq should be === Seq()
+      db.fetchById[A](a1._id.get).seq should be === Seq()
     }
     test(dbId + " - seq of none"){
-      db.fetchById[A](a4.id.get).seq should be === Seq(None)
+      db.fetchById[A](a4._id.get).seq should be === Seq(None)
     }
     test(dbId + " - not empty seqs are correct"){
-      db.fetchById[A](a2.id.get).seq should be === Seq(Some(b1), None, Some(b2))
-      db.fetchById[A](a3.id.get).seq should be === Seq(None, Some(b2))
+      db.fetchById[A](a2._id.get).seq should be === Seq(Some(b1), None, Some(b2))
+      db.fetchById[A](a3._id.get).seq should be === Seq(None, Some(b2))
     }
   }
 }

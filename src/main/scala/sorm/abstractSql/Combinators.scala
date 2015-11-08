@@ -99,7 +99,7 @@ object Combinators {
                 )
           )
         case (m : EntityMapping, v : Persistable) =>
-          equaling(m.id, v.id)
+          equaling(m._id, v._id)
         case (m : RangeMapping, v : Range ) =>
           equaling(m.start, v.start) & equaling(m.end, v.end)
         case (m : TupleMapping, v : Product ) =>
@@ -171,7 +171,7 @@ object Combinators {
                 ) reduceOption Or
           )
         case (m : EntityMapping, v : Persistable) =>
-          notEqualing(m.id, v.id)
+          notEqualing(m._id, v._id)
         case (m : RangeMapping, v : Range ) =>
           notEqualing(m.start, v.start) | notEqualing(m.end, v.end)
         case (m : TupleMapping, v : Product ) =>

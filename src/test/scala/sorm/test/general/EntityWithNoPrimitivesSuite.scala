@@ -28,14 +28,14 @@ class EntityWithNoPrimitivesSuite extends FunSuite with ShouldMatchers {
 //      .map(db.save)
 
     val node = db.query[Artist]
-      .whereEqual("id", 1)
+      .whereEqual("_id", 1)
       .fetchOne()
       .get
     val n2 = node.copy(genres = Set("rock","rnb"), a = Set("myfoo"), b = Set("mybar"))
-    n2.id = node.id
+    n2._id = node._id
     db.save(n2)
 
-    db.query[Artist].whereEqual("id", 1).fetchOne().map(_.b).shouldBe(Some(Set("mybar")))
+    db.query[Artist].whereEqual("_id", 1).fetchOne().map(_.b).shouldBe(Some(Set("mybar")))
   }
 }
 object EntityWithNoPrimitivesSuite {

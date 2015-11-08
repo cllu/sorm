@@ -5,7 +5,7 @@ object Build extends Build {
   // factor out common settings into a sequence
   lazy val commonSettings = Seq(
     organization := "com.chunlianglyu.sorm2",
-    version := "0.4.2",
+    version := "0.4.3",
     // set the Scala version used for the project
     scalaVersion := "2.11.7"
   )

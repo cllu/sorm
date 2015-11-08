@@ -16,30 +16,30 @@ class EntityMapping
 
   lazy val properties = {
     val properties = reflection.properties
-    properties.filter(p => !Seq("id", "id_$eq").contains(p._1)).map{
+    properties.filter(p => !Seq("_id", "_id_$eq").contains(p._1)).map{
       case (n, r) => n -> Mapping(r, Membership.EntityProperty(n, this), settings)
     }
   }
   lazy val mappings // todo: add id
     = properties.values.toStream
-  lazy val primaryKeyColumns = id.column +: Stream()
-  lazy val id = new ValueMapping(Reflection[Long], Some(Membership.EntityId(this)), settings)
-  lazy val generatedColumns = id.column +: Stream()
+  lazy val primaryKeyColumns = _id.column +: Stream()
+  lazy val _id = new ValueMapping(Reflection[Long], Some(Membership.EntityId(this)), settings)
+  lazy val generatedColumns = _id.column +: Stream()
 
   def parseResultSet(rs: ResultSetView, c: DriverConnection)
     = rs.byNameRowsTraversable.toStream
         .headOption
         .map( row => Persisted(
           properties.mapValues( _.valueFromContainerRow(row, c) ),
-          row("id") $ Util.toLong,
+          row("_id") $ Util.toLong,
           reflection
         ) )
         .get
 
   def delete ( node : Persistable, connection : DriverConnection ) {
-    node.id match {
+    node._id match {
       case Some(id) =>
-        ("id" -> id) $ (Stream(_)) $ (tableName -> _) $$ connection.delete
+        ("_id" -> id) $ (Stream(_)) $ (tableName -> _) $$ connection.delete
       case None =>
         throw new SormException("Attempt to delete an unpersisted entity: " + node)
     }
@@ -48,7 +48,7 @@ class EntityMapping
   def valuesForContainerTableRow(value : Any)
     = value match {
         case value : Persistable =>
-          ( memberName + "$id" -> value.id.get ) +: Stream()
+          ( memberName + "$_id" -> value._id.get ) +: Stream()
         case _ =>
           throw new SormException("Attempt to refer to an unpersisted entity: " + value)
       }
@@ -58,7 +58,7 @@ class EntityMapping
       val propertyValues = properties.map{ case (n, m) => (n, m, reflection.propertyValue(n, node.asInstanceOf[AnyRef])) }.toStream
       val rowValues = propertyValues.flatMap{ case (n, m, v) => m.valuesForContainerTableRow(v) }
 
-      node.id match {
+      node._id match {
         case Some(id) =>
           // update
           val pk = Stream(id)

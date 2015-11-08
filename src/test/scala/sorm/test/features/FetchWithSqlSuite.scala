@@ -22,12 +22,12 @@ class FetchWithSqlSuite extends FunSuite with ShouldMatchers with MultiInstanceS
     val a3 = db.save(A("C" ))
 
     test(dbId + " - general") {
-      db.fetchWithSql[A]("select id from a where a=?", "B").head
+      db.fetchWithSql[A]("select _id from a where a=?", "B").head
         .should( equal(a2) )
     }
     test(dbId + " - fails on excess columns") {
       intercept[AssertionError] {
-        db.fetchWithSql[A]("select id, a from a where a=?", "B")
+        db.fetchWithSql[A]("select _id, a from a where a=?", "B")
       }
     }
     test(dbId + " - fails on a wrong single column") {

@@ -16,7 +16,7 @@ class Querier [ T <: Persistable : TypeTag ] ( query : Query, connector : Connec
    */
   def fetch () : Stream[T]
     = fetchIds()
-        .map("id" -> _).map(Map(_))
+        .map("_id" -> _).map(Map(_))
         .map{ pk =>
           connector.withConnection { cx =>
             query.mapping.fetchByPrimaryKey(pk, cx).asInstanceOf[T]
@@ -29,7 +29,7 @@ class Querier [ T <: Persistable : TypeTag ] ( query : Query, connector : Connec
    */
   def fetchIds () : Stream[Long]
     = connector.withConnection { cx =>
-        query $ AbstractSqlComposition.primaryKeySelect $ (cx.query(_)(_.byNameRowsTraversable.toList)) $ (_.toStream) map (_("id") $ Util.toLong)
+        query $ AbstractSqlComposition.primaryKeySelect $ (cx.query(_)(_.byNameRowsTraversable.toList)) $ (_.toStream) map (_("_id") $ Util.toLong)
       }
 
   /**

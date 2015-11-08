@@ -19,9 +19,9 @@ class OptionValueSupportSuite extends FunSuite with ShouldMatchers with MultiIns
     val a3 = db.save(A(Some(7)))
 
     test(dbId + " - saved entities are correct"){
-      db.fetchById[A](a1.id.get).a should be === None
-      db.fetchById[A](a2.id.get).a should be === Some(3)
-      db.fetchById[A](a3.id.get).a should be === Some(7)
+      db.fetchById[A](a1._id.get).a should be === None
+      db.fetchById[A](a2._id.get).a should be === Some(3)
+      db.fetchById[A](a3._id.get).a should be === Some(7)
     }
     test(dbId + " - equals filter"){
       db.query[A]

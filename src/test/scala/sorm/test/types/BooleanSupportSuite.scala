@@ -16,7 +16,7 @@ class BooleanSupportSuite extends FunSuite with ShouldMatchers with MultiInstanc
     val seq = true :: true :: false :: true :: false :: Nil
     seq.foreach(v => db.save(A(v)))
     test(dbId + " - fetching"){
-      db.query[A].order("id").fetch().map(_.boo)
+      db.query[A].order("_id").fetch().map(_.boo)
         .should(equal(seq))
     }
     test(dbId + " - filtering"){

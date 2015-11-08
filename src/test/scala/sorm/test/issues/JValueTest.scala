@@ -29,7 +29,7 @@ class JValueTest extends FunSuite with ShouldMatchers {
 
 }
 object JValueTest {
-  case class User( jvalue: JValue) extends Persistable
+  case class User(jvalue: JValue) extends Persistable
 
   case class UserGroup( name: String, url: String) extends Persistable
   case class Permission( user: User, userGroup: UserGroup, name: String, permission: Boolean)extends Persistable

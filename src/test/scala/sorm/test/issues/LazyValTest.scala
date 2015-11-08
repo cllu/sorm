@@ -29,7 +29,7 @@ class LazyValTest extends FunSuite with ShouldMatchers {
       db.query[User].whereEqual("format", "XXX").fetchOne().get
     }
     assert(u2.name == "XXX")
-    assert(u2.id.get == 1)
+    assert(u2._id.get == 1)
   }
 
 }

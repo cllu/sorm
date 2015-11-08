@@ -1,3 +1,6 @@
+0.4.3
+  - use _id as primary key instead of id
+
 0.4.2
   - Bump json4s-jackso version to v3.3.0.RC5
   - Remove dependency on scala-compiler

@@ -91,8 +91,8 @@ object Path {
     : Mapping
     = if( path == "" ) host
       else ( host, path.splitBy(".") ) match {
-        case (host : EntityMapping, ("id", r)) =>
-          mapping( host.id, r )
+        case (host : EntityMapping, ("_id", r)) =>
+          mapping( host._id, r )
         case (host : EntityMapping, (id, r)) =>
           mapping( host.properties(id), r )
         case (host : RangeMapping, ("start", r)) =>

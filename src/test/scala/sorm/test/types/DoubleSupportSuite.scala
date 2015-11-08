@@ -13,7 +13,7 @@ class DoubleSupportSuite extends FunSuite with ShouldMatchers with MultiInstance
     val seq : Seq[Double] = Seq(2, 2.230192321, 3.3209483290840923839230, 0.213)
     seq.foreach(v => db.save(A(v)))
     test(dbId + " - fetching"){
-      db.query[A].order("id").fetch().map(_.a)
+      db.query[A].order("_id").fetch().map(_.a)
         .should(equal(seq))
     }
     test(dbId + " - filtering"){

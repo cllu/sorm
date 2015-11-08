@@ -16,7 +16,7 @@ class ParallelSuite extends FunSuite with ShouldMatchers with MultiInstanceSuite
     val data = 10 to 200
     data.par.foreach(v => db.save(A(v)))
     test(dbId + " - fetching"){
-      db.query[A].order("id").fetch().map(_.a).toSet
+      db.query[A].order("_id").fetch().map(_.a).toSet
         .should(equal(data.toSet))
     }
   }

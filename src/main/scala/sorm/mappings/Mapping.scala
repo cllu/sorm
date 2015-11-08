@@ -20,7 +20,7 @@ trait Mapping {
           case Membership.SeqIndex(_) =>
             "i"
           case Membership.EntityId(_) =>
-            "id"
+            "_id"
           case Membership.EntityProperty(name, _) =>
             ddlName(name)
           case Membership.TupleItem(index, tuple) =>

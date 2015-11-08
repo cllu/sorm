@@ -27,9 +27,9 @@ class FieldTestSuite1 extends FunSuite with ShouldMatchers with SequentialNested
       Entity[Album](unique = Set() + Seq("sourceId"))
   def instance( t: DbType ) = TestingInstances.instance(entities, t)
 
+  test("H2 initialization") { instance(DbType.H2).close() }
   test("PostgreSQL initialization") { instance(DbType.Postgres).close() }
   test("HSQLDB initialization") { instance(DbType.Hsqldb).close() }
-  test("H2 initialization") { instance(DbType.H2).close() }
   test("MySQL initialization") { instance(DbType.Mysql).close() }
 
 }
